@@ -37,6 +37,11 @@ Permissions: Permissions in SQL define the access control rules that determine w
              ensures data security, integrity, and controlled access to database operations.
 */
 
+/*
+   IMPORTANT: Before attempting the problems below, please comment out the last two INSERT statements from inserts.sql.
+   These two INSERTS were included solely for practicing LEFT and RIGHT JOINS in the select.sql script.
+*/
+
 -- Practice Problems:
 
 /*

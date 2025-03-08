@@ -1,4 +1,4 @@
--- INSERTS
+-- Please do not modify this file. It is intended for execution only.
 
 -- GENRE INSERTS
 

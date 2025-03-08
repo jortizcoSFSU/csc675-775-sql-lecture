@@ -1,10 +1,4 @@
--- This database will be used to learn the basics SELECT, UPDATE, DELETE and more SQL statements. 
--- This database was used in many final exams as the base database for these problems in this class 
-
-/* 
-The next two lines are not necessary in sqlfiddle. However, 
-they are needed if you need to run this database schema in MySQLWorkBench 
-*/
+-- Please do not modify this file. It is intended for execution only.
 
 DROP DATABASE IF EXISTS MusicDB;
 CREATE DATABASE IF NOT EXISTS MusicDB;
