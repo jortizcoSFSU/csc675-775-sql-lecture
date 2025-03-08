@@ -1,102 +1,138 @@
 USE MusicDB;
 
+/*
+-- This script contains various SELECT statement practice problems.
+-- In these practice problems, students will develop the following SQL skills:
 
--- Part 1: The basics of SELECT  ---------------------------------------------------------------------------------------
+-- 1. Basic Data Retrieval: Learn how to retrieve data from a database using basic SELECT statements.
+-- 2. Table Joins: Understand how to join multiple tables using the `WHERE` clause and the `JOIN` clause,
+      including inner and outer joins.
+-- 3. Filtering Data: Apply conditions with the `WHERE` clause to filter data, including excluding specific values
+      and combining multiple conditions.
+-- 4. Sorting Data: Sort query results using the `ORDER BY` clause, both in ascending and descending order.
+-- 5. Grouping and Aggregations: Use aggregate functions like `SUM()`, `COUNT()`, and `AVG()` to summarize data,
+      and group the results with the `GROUP BY` clause.
+-- 6. Subqueries and Nested Queries: Solve complex problems using subqueries and nested queries, including filtering,
+      calculating, and comparing data.
+-- 7. Advanced Techniques: Implement advanced SQL techniques such as Common Table Expressions (CTEs), Views,
+      and handling ties in ranked data.
+-- 8. Handling NULLs and OUTER JOINS: Master the use of various types of joins (e.g., `LEFT JOIN`, `RIGHT JOIN`,
+      `FULL OUTER JOIN`) to handle missing or incomplete data.
+-- 9. Pattern Matching and String Manipulation: Use SQL string functions to filter and manipulate data based on patterns
+      (e.g., using `LIKE` or `SUBSTRING`).
+-- 10. Multi-Table Relationships: Work with complex relationships between tables and retrieve related data effectively
+       using joins.
+-- 11. Ranking Functions: Use ranking functions like `RANK()` and `ROW_NUMBER()` to find specific positions in ordered
+       datasets (e.g., second-highest sales).
+-- 12. Advanced Data Analysis: Conduct complex analyses involving averages, comparisons, and conditional
+       calculations across multiple tables.
+/*
 
--- (1) Find all the tracks
- 
- 
- 
+/*
+    Retrieve all tracks from the database.
+*/
 
-
--- (2) Find all the tracks in the album "Objection overruled" without JOINS 
-
-
-
-
--- (3) Find all the tracks in the album "Objection overruled" with INNER JOIN
-
-
--- (4) Find all the tracks in the genre of "Metal" and "Pop" but not "Jazz". Show the title of the track, the album of the track, and the genre of the track.
-
-
-
-
--- (5) Find all the customers that purchased the track 'Bury a Friend' . Show the name of the customer and the invoice number for that track. 
-
-
-
-
-
--- (6) Find all the tracks that were released before 1995. Order by year released in descending order. Show artist name, the title of the track, and date it was created
-
-
--- (7) For each track, determine whether the track's length is "too long", "normal" or "too short" witht he following rules. Show the track title, the artist, 
---     the duration of the track, and its description as stated:
-       -- "too long" >= 6 minutes 
-       -- 6 minutes > "normal" >= 4 minute 
-       -- "too short" < 4 minute
-       
-
--- Part 2: Grouping Attributes   ----------------------------------------------------------------------------------------
--- (1) For each state, find the total sales of tracks purchased where the total sales is more than 5 dollars. Order total sales in descending order. Show state and the total sales for each state.
+/*
+    Solve this problem using two approaches:
+    - Joining tables in the WHERE SQL clause
+    - Joining tables using JOIN SQL clause
+    Find all tracks in the album "Objection Overruled".
+*/
 
 
+/*
+    Find all tracks in the genres "Metal" and "Pop" but exclude "Jazz".
+    Display the track title, album title, and genre name.
+*/
 
--- (2) For each album find all the tracks where track's title has 'o' in character index number 1. Show album's title and track title's 
+/*
+    Find all customers who purchased the track "Bury a Friend".
+    Display the customer name and the invoice number for that track.
+*/
+
+/*
+    Retrieve all tracks released before 1995.
+    Order results by release year in descending order.
+    Display the artist name, track title, and release date.
+*/
+
+/*
+    Solve the following problem using three different approaches:
+       - A Common Table Expression (CTE)
+       - A View
+       - A Subquery
+
+    For each track, categorize its length as "Too Long," "Normal," or "Too Short."
+    Display the track title, artist name, duration, and the category.
+*/
+
+/*
+    Find the total track sales per state where total sales exceed $5.
+    Order the results by total sales in descending order.
+    Display the state and the corresponding total sales.
+*/
+
+/*
+    Find all tracks in each album where the track title contains 'o' at index position 1.
+    Display the album title and track title.
+*/
+
+/*
+    Find the number of tracks per album where the track title length exceeds 9 characters.
+    Display the album title and the count of such tracks.
+*/
+
+/*
+    Retrieve all customers and their invoices, including customers without invoices.
+*/
+
+/*
+    Retrieve all invoices and their associated customers, including invoices without customers.
+*/
+
+/*
+    Retrieve all invoices that have customers, and all customers who have invoices.
+*/
+
+/*
+    Retrieve all customers who have no invoices.
+*/
+
+/*
+    Retrieve all invoices that have no customers.
+*/
+
+/*
+    Retrieve all invoices and all customers.
+*/
+
+/*
+    Retrieve all invoices without customers and customers without invoices.
+*/
+
+/*
+    Find all customers who purchased the same track.
+    Display the customer name and track title.
+*/
+
+/*
+    Find the second most popular track based on total sales (most popular = highest sales).
+    Display the track title and its total sales.
+    Ensure you account for potential ties in the sales data.
+*/
+
+
+/*
+    For each album, find the number of tracks where:
+    - The track title contains 'o' at index position 1.
+    - The average unit price of these tracks is greater than the overall average unit price of all invoices.
+
+    Display the album title, count of tracks, and their average unit price.
+*/
 
 
 
--- (3) For each album find the number of tracks where track's title is greater than 9 characters.  Show album's title and number of tracks
 
-
--- Part 3: JOINS --------------------------------------------------------------------------------------------------------------------------------------------------
-
--- (1) Find all the customers and their invoices, including customers who have no invoices 
-
-
--- (2) Find all the invoices and their customers, including invoices that with no customers.
-
--- (3) Find all the invoices that have customers, and all the customers who have invoices
-
--- (4) Find all the costumers who have no invoices 
-
--- (5) Find all the invoices that have no customers
-
--- (6) Find all the invoices and all the customers.
- 
-
-
-
-
--- Part 4: Challenging your logic  ----------------------------------------------------------------------------------------
-
--- (1) Find all the customers that purchased the same track. Show the name of the customer and the title of the track.
-
--- (2) Find all the second highest total sales. Show the track's title, and total_sales for that track 
-
--- (3) Find all the invoices with no customers, and customers with no invoices. 
-
-
-
-
-
-
- 
- 
- 
- -- Part 5: Inner Queries  ---------------------------------------------------------------------------------------------
-
--- For each album find the number of tracks where track's title has 'o' in character index number 1, and which track's average unit price is greater than the average unit price of all the invoices. Show album's title and number of tracks, and avg unit price 
-
-
--- Solve this problem with a subquery. You are not allowed to use CTE or View components 
-
-    -- For each track, determine whether the track's length is "too long", "normal" or "too short" witht he following rules. 
-    -- Show the track title, the artist, 
-	-- "too long" >= 6 minutes 
-       -- 6 minutes > "normal" >= 4 minute 
-       -- "too short" < 4 minute
 
 
 
