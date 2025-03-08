@@ -20,4 +20,4 @@ This repository is intended solely for use in **Csc675.775.02.03.04** at [Instit
 ## 4. License Duration
 - Your access to this repository is granted for the duration of the course. The instructor may revoke access at any time.
 
-By using this repository, you acknowledge that you understand and agree to these terms. If you have questions about permitted use, please contact **Jose Ortiz** at [Your Email or Institution Contact].
+By using this repository, you acknowledge that you understand and agree to these terms. If you have questions about permitted use, please contact **Jose Ortiz** at jortizco@sfsu.edu
