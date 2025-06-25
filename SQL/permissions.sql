@@ -10,6 +10,12 @@ Business Requirement #1: Enable authorized employees in the
                          only be accessible to sales department employees who have granted permission
                          to access the Invoice table.
 
+                         Algorithm: 
+                         1. Create a HAS_PERMISSIONS(...) FUNCTION TO CHECK PERMISSIONS FOR ALL THE USERS THAT ATTEMPT TO RUN THE FUNCTION.
+                         2. Once permissions are checked, then we create a procedure INCREASE_PRICES that will increase the unit_price for every track based on a percentage given and a genre.
+
+
+
 
 */
 
@@ -37,6 +43,12 @@ Business Requirement #3: Automatically archive old customer data that hasn't mad
                              their data should be returned to the original `Customer` and `Invoice` tables with their original customer ID.
                         (5) The process of reactivating archived customers should ensure their records are properly
                             re-associated with any new transactions.
+
+                        Algorithm: 
+                        1. First of all, we need to alter the table Invoice to add a 'date_created' attribute
+                        2. Add archived column to Customer table
+                        3. Create the event to archive and reactivating archived customers
+
 
 
 */
