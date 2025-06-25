@@ -1,4 +1,5 @@
 USE MusicDB;
+SET GLOBAL event_scheduler = ON;
 /*
 
 In this SQL script, students will learn to solve business requirements using the following
@@ -9,6 +10,8 @@ Triggers: A trigger is a database object that automatically executes a specified
          such as an INSERT, UPDATE, or DELETE operation. It is typically used for
          enforcing business rules, maintaining audit trails, and managing complex
          integrity constraints.
+
+
 
 Functions: A function is a reusable database object that performs a specific operation
           and returns a single value or result. Functions are typically designed to accept
@@ -38,20 +41,32 @@ Permissions: Permissions in SQL define the access control rules that determine w
 */
 
 /*
-   IMPORTANT: Before attempting the problems below, please comment out the last two INSERT statements from inserts.sql.
-   These two INSERTS were included solely for practicing LEFT and RIGHT JOINS in the select.sql script.
+   IMPORTANT: Before solving the problems below, comment out the last two INSERT statements in inserts.sql.
+   These INSERTs were added specifically for practicing LEFT and RIGHT JOINS in select.sql.
+
+   Each business requirement in this file must be implemented using at least one of the specified components.
 */
 
--- Practice Problems:
+
+DELIMITER $$
+
+
 
 /*
-Business Requirement #1: Update a customer's total purchases in the Sales table
+Business Requirement #1: Identify the most popular track in each state.
+                         Display the track title and the state where it was purchased.
+
+                         Assumptions:
+                         (1) Popularity is determined by the highest number of sales in a state.
+                             Note that total sales is not a good indicator here, number of invoices and quantity is.
+                         (2) Customers can only purchase tracks in their state of residence.
+*/
+
+/*
+Business Requirement #2: Update a customer's total purchases in the Sales table
                          each time a new invoice is created.
 */
 
-/*
-Business Requirement #2: Display the most popular genres by region (state).
-*/
 
 /*
 Business Requirement #3: Ensure that when a customer is deleted from the database,
@@ -67,25 +82,28 @@ Business Requirement #4: Your company needs to generate an annual sales report t
                          you must implement this feature without using aggregators for the time being.
 */
 
+     -- 4.1 solve this problem with aggregators;
+
+     -- 4.2 solve this problem without using aggregators;
+
+
 /*
 Business Requirement #5: Implement a feature to calculate and display the average sales amount
                          for a specific customer, identified by their customer ID, to support
                          personalized sales analysis.
 */
 
-/*
-Business Requirement #6: Enable authorized employees in the
-                         sales department to increase the price of tracks within a specified
-                         genre (e.g., Jazz) by a given percentage. Note that this mechanism should
-                         only be accessible to sales department employees who have granted permission
-                         to access the Invoice table.
-*/
 
 /*
-Business Requirement #7: Implement a monthly aggregation of sales. Each month, the system
+Business Requirement #6: Implement a monthly aggregation of sales. Each month, the system
                          must summarize sales by state with a timestamp and insert it into
                          the MonthlySalesAggregation table.
 */
+
+
+
+
+
 
 
 
