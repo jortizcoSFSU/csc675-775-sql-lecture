@@ -1,5 +1,4 @@
-USE MusicDB;
-SET GLOBAL event_scheduler = ON;
+
 /*
 
 In this SQL script, students will learn to solve business requirements using the following
