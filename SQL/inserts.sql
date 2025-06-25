@@ -11,9 +11,9 @@ INSERT INTO Genre (genre_id, description) VALUES (4, 'Alternative & Punk');
 INSERT INTO Genre (genre_id, description) VALUES (5, 'Rock And Roll');
 INSERT INTO Genre (genre_id, description) VALUES (6, 'Blues');
 INSERT INTO Genre (genre_id, description) VALUES (7, 'Latin');
-INSERT INTO Genre (genre_id, description) VALUES (9, 'Pop');
-INSERT INTO Genre (genre_id, description) VALUES (10, 'Dance & Electronic');
-
+INSERT INTO Genre (genre_id, description) VALUES (8, 'Pop');
+INSERT INTO Genre (genre_id, description) VALUES (9, 'Dance & Electronic');
+INSERT INTO Genre VALUES (11, 'Metal'), (12, 'pop'), (13, 'Bachata');
 -- ALBUM INSERTS
 INSERT INTO Album (album_id, title, year_released) VALUES (1, 'Do not smile at me', 2019);
 INSERT INTO Album (album_id, title, year_released) VALUES (2, 'Alanis',1993), (3, 'Jagged Little Pill', 1995);
@@ -45,17 +45,17 @@ INSERT INTO Track (track_id, genre, album, artist, title, length) VALUES (13, 2,
 INSERT INTO Track (track_id, genre, album, artist, title, length) VALUES (14, 3, 4, 1, 'Danger', 210);
 
 -- CUSTOMER INSERTS
-INSERT INTO Customer (customer_id, name, zipcode, state) VALUES (1, "Jose Ortiz", 94112, "CA");
-INSERT INTO Customer (customer_id, name, zipcode, state) VALUES (2, "Alice Boe", 94332, "CA");
-INSERT INTO Customer (customer_id, name, zipcode, state) VALUES (3, "Bob Martir", 85001, "AZ");
-INSERT INTO Customer (customer_id, name, zipcode, state) VALUES (4, "Tobi Love", 87012, "AZ");
-INSERT INTO Customer (customer_id, name, zipcode, state) VALUES (5, "Lulu Joy", 81201, "CO");
-INSERT INTO Customer (customer_id, name, zipcode, state) VALUES (6, "Howie Bowie", 81301, "CO");
-INSERT INTO Customer (customer_id, name, zipcode, state) VALUES (7, "Trudi Voix", 72001, "AR");
-INSERT INTO Customer (customer_id, name, zipcode, state) VALUES (8, "Maria Jimenez", 72002, "AR");
-INSERT INTO Customer (customer_id, name, zipcode, state) VALUES (9, "Christina Pedroche", 65438, "NY");
-INSERT INTO Customer (customer_id, name, zipcode, state) VALUES (10, "Clea Bean", 65456, "NY");
-INSERT INTO Customer (customer_id, name, zipcode, state) VALUES (11, "Ozzie Bear", 94567, "CA");
+INSERT INTO Customer (customer_id, name, zipcode, state) VALUES (1, 'Jose Ortiz', 94112, 'CA');
+INSERT INTO Customer (customer_id, name, zipcode, state) VALUES (2, 'Alice Boe', 94332, 'CA');
+INSERT INTO Customer (customer_id, name, zipcode, state) VALUES (3, 'Bob Martir', 85001, 'AZ');
+INSERT INTO Customer (customer_id, name, zipcode, state) VALUES (4, 'Tobi Love', 87012, 'AZ');
+INSERT INTO Customer (customer_id, name, zipcode, state) VALUES (5, 'Lulu Joy', 81201, 'CO');
+INSERT INTO Customer (customer_id, name, zipcode, state) VALUES (6, 'Howie Bowie', 81301, 'CO');
+INSERT INTO Customer (customer_id, name, zipcode, state) VALUES (7, 'Trudi Voix', 72001, 'AR');
+INSERT INTO Customer (customer_id, name, zipcode, state) VALUES (8, 'Maria Jimenez', 72002, 'AR');
+INSERT INTO Customer (customer_id, name, zipcode, state) VALUES (9, 'Christina Pedroche', 65438, 'NY');
+INSERT INTO Customer (customer_id, name, zipcode, state) VALUES (10, 'Clea Bean', 65456, 'NY');
+INSERT INTO Customer (customer_id, name, zipcode, state) VALUES (11, 'Ozzie Bear', 94567, 'CA');
 
 -- INVOICE INSERTS
 INSERT INTO Invoice (invoice_id, track, customer, quantity, unit_price) VALUES (1,1,1,3,29.00);
