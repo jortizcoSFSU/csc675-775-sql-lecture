@@ -1,5 +1,6 @@
 USE MusicDB;
 
+
 /*
 -- This script contains various SELECT statement practice problems.
 -- In these practice problems, students will develop the following SQL skills:
@@ -30,47 +31,107 @@ USE MusicDB;
 
 /*
     Retrieve all tracks from the database.
-*/
+    Technique to organize your data
+      1. What to Show (WTS): SELECT *
+      2. Where to find it: (WTF): FROM Track
+      3. Any conditions to filter your data? (C): No
+ */
+
+
+
+
+
 
 /*
     Solve this problem using two approaches:
     - Joining tables in the WHERE SQL clause
     - Joining tables using JOIN SQL clause
     Find all tracks in the album "Objection Overruled".
+    Technique to organize your data
+      1. What to Show (WTS): SELECT *
+      2. Where to find it: (WTF): FROM Track, Album
+      3. Any conditions to filter your data? (C): Album.title = "Objection Overruled"
 */
+
+-- (1) brute forcing with static reference
+
+
+-- (2) Using INNER JOIN
+
+
+-- (2) Using Dynamic References
 
 
 /*
     Find all tracks in the genres "Metal" and "Pop" but exclude "Jazz".
-    Display the track title, album title, and genre name.
+    Display the track title, album title, and genre description.
 */
 
+
+
 /*
-    Find all customers who purchased the track "Bury a Friend".
+    -- v1 : Find all customers who purchased the track "Bury a Friend".
+    Display the customer name and the invoice number for that track.
+
+    -- v2: Find all customers who purchased track number #1.
     Display the customer name and the invoice number for that track.
 */
 
+-- v1
+
+
+-- v2
+
 /*
-    Retrieve all tracks released before 1995.
+    Retrieve all tracks released between years 1990 and 1995 (both inclusive).
     Order results by release year in descending order.
     Display the artist name, track title, and release date.
 */
 
+-- V1: without alias
+
+
+-- V2: with alias
+
+
+-- Show only the most recent released track
+
+
+-- Show the oldest released track
+
+
+
 /*
-    Solve the following problem using three different approaches:
+    Solve the following problem using four different approaches:
+       - Multiple Computations for the same value
        - A Common Table Expression (CTE)
        - A View
        - A Subquery
 
     For each track, categorize its length as "Too Long," "Normal," or "Too Short."
     Display the track title, artist name, duration, and the category.
+
 */
+
+-- Multiple Computations
+
+
+-- Common Table Expression. (CTE)
+
+
+-- View
+
+
+-- Subquery
+
 
 /*
     Find the total track sales per state where total sales exceed $5.
     Order the results by total sales in descending order.
     Display the state and the corresponding total sales.
 */
+
+
 
 /*
     Find all tracks in each album where the track title contains 'o' at index position 1.
@@ -82,44 +143,82 @@ USE MusicDB;
     Display the album title and the count of such tracks.
 */
 
+
 /*
     Retrieve all customers and their invoices, including customers without invoices.
 */
+
+
 
 /*
     Retrieve all invoices and their associated customers, including invoices without customers.
 */
 
+
+
 /*
     Retrieve all invoices that have customers, and all customers who have invoices.
 */
+
+
 
 /*
     Retrieve all customers who have no invoices.
 */
 
+
 /*
     Retrieve all invoices that have no customers.
 */
+
 
 /*
     Retrieve all invoices and all customers.
 */
 
+-- WITH UNION, REMOVES ONE OF THE INTERSECTION
+
+-- UNION ALL WILL KEEP THE TWO INTERSECTIONS OF THE TABLES
+
+-- WITH UNION, REMOVES ONE OF THE INTERSECTION
+
+
+
 /*
     Retrieve all invoices without customers and customers without invoices.
 */
 
+
+
+
 /*
     Find all customers who purchased the same track.
     Display the customer name and track title.
+
+    Easier Instance: Find all customers who purchased track 'Bury a Friend'
 */
+
+-- Easiest Instance of the problem
+
+
+-- Solution for the hard problem
+
+
+-- Follow up: Solve the problem using a subquery
+
 
 /*
     Find the second most popular track based on total sales (most popular = highest sales).
     Display the track title and its total sales.
     Ensure you account for potential ties in the sales data.
+
 */
+
+-- Solve with Common Table Expression (CTE)
+
+
+-- With Ranking
+
 
 
 /*
@@ -129,6 +228,27 @@ USE MusicDB;
 
     Display the album title, count of tracks, and their average unit price.
 */
+
+
+-- Different Approach using a CASE executed within the COUNT aggregator instead of a subquery
+
+-- A production-ready version of this problem with CTEs
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
