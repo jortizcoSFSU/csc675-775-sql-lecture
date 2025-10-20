@@ -27,14 +27,21 @@ USE MusicDB;
        datasets (e.g., second-highest sales).
 -- 12. Advanced Data Analysis: Conduct complex analyses involving averages, comparisons, and conditional
        calculations across multiple tables.
-/*
+
+-- What is SQL Language: SQL Language is a declarative language. This means that you only need to worry about which data needs
+to be retrieved. But not how to retrieve it. The HOW to retrieve the data is already handled by the engine and optimizer.
+
+
+
+
+
+
+/* =============================== PRACTICE PROBLEMS =================================================================*/
+
 
 /*
     Retrieve all tracks from the database.
-    Technique to organize your data
-      1. What to Show (WTS): SELECT *
-      2. Where to find it: (WTF): FROM Track
-      3. Any conditions to filter your data? (C): No
+    
  */
 
 
@@ -42,45 +49,45 @@ USE MusicDB;
 
 
 
+
+
 /*
-    Solve this problem using two approaches:
-    - Joining tables in the WHERE SQL clause
-    - Joining tables using JOIN SQL clause
-    Find all tracks in the album "Objection Overruled".
-    Technique to organize your data
-      1. What to Show (WTS): SELECT *
-      2. Where to find it: (WTF): FROM Track, Album
-      3. Any conditions to filter your data? (C): Album.title = "Objection Overruled"
+   
+    Find all tracks on the album "Objection Overruled".
+
 */
 
--- (1) brute forcing with static reference
+-- (1) Using WHERE with fully qualified references
 
 
--- (2) Using INNER JOIN
+-- (2) Using INNER JOIN with alias-qualified references
 
-
--- (2) Using Dynamic References
 
 
 /*
-    Find all tracks in the genres "Metal" and "Pop" but exclude "Jazz".
+    Find all tracks in the genres "Metal" and 'Alternative & Punk' but exclude "Jazz".
     Display the track title, album title, and genre description.
+
+    
 */
 
 
 
 /*
-    -- v1 : Find all customers who purchased the track "Bury a Friend".
+    -- (1) Find all customers who purchased the track "Bury a Friend".
     Display the customer name and the invoice number for that track.
 
-    -- v2: Find all customers who purchased track number #1.
+
+    -- (2) Find all customers who purchased track number #1.
     Display the customer name and the invoice number for that track.
 */
 
--- v1
+    -- (1) We need the customer, the track and the invoice
 
 
--- v2
+    -- (2) How can we optimize this query in order for it to do less work? not joining the track table because we don't need it.
+
+
 
 /*
     Retrieve all tracks released between years 1990 and 1995 (both inclusive).
@@ -88,16 +95,22 @@ USE MusicDB;
     Display the artist name, track title, and release date.
 */
 
--- V1: without alias
+-- (1) without column alias
 
 
--- V2: with alias
 
 
--- Show only the most recent released track
+
+-- (2) with column alias
 
 
--- Show the oldest released track
+
+
+-- (3) Show only the most recent released track
+
+
+
+-- (4) Show the oldest released track
 
 
 
@@ -111,18 +124,31 @@ USE MusicDB;
     For each track, categorize its length as "Too Long," "Normal," or "Too Short."
     Display the track title, artist name, duration, and the category.
 
+    If the track length >= 6 minutes then categorize it as "Too long"
+    If the track length < 6 and >= 4 minutes then categorize it as "Normal"
+    If the track length <4 then categorize it as "Too Short"
+
 */
 
--- Multiple Computations
+-- (1) Brute Forcing Repeated Computations
 
 
--- Common Table Expression. (CTE)
+
+-- (2) Optimizing with a Common Table Expression. (CTE)
+   
 
 
--- View
+
+-- (3) Optimizing with a View
 
 
--- Subquery
+
+
+-- (4) Another version of this problem with a Subquery
+    
+
+
+
 
 
 /*
@@ -130,6 +156,8 @@ USE MusicDB;
     Order the results by total sales in descending order.
     Display the state and the corresponding total sales.
 */
+  
+
 
 
 
@@ -137,16 +165,22 @@ USE MusicDB;
     Find all tracks in each album where the track title contains 'o' at index position 1.
     Display the album title and track title.
 */
+    
 
 /*
     Find the number of tracks per album where the track title length exceeds 9 characters.
     Display the album title and the count of such tracks.
 */
 
+   
+
+
 
 /*
     Retrieve all customers and their invoices, including customers without invoices.
 */
+
+ 
 
 
 
@@ -167,6 +201,8 @@ USE MusicDB;
 */
 
 
+
+
 /*
     Retrieve all invoices that have no customers.
 */
@@ -175,12 +211,6 @@ USE MusicDB;
 /*
     Retrieve all invoices and all customers.
 */
-
--- WITH UNION, REMOVES ONE OF THE INTERSECTION
-
--- UNION ALL WILL KEEP THE TWO INTERSECTIONS OF THE TABLES
-
--- WITH UNION, REMOVES ONE OF THE INTERSECTION
 
 
 
@@ -192,19 +222,35 @@ USE MusicDB;
 
 
 /*
-    Find all customers who purchased the same track.
+    Find all customers who purchased the same track.(instead of the same track, customer that purchased the track 'Bury a Friend')
     Display the customer name and track title.
 
-    Easier Instance: Find all customers who purchased track 'Bury a Friend'
+    
 */
 
--- Easiest Instance of the problem
+-- (1) Easiest Instance of the problem: Find all customers who purchased track 'Bury a Friend'
 
 
--- Solution for the hard problem
 
 
--- Follow up: Solve the problem using a subquery
+
+
+-- (2) Solution for the hard problem
+
+
+
+-- (3) Follow up: Solve the problem using a subquery
+
+
+
+/*
+   Find the full referral chain for a given customer (for example, Customer 1 -> referred 2 -> referred 3 -> referred 4)
+
+*/
+
+
+
+
 
 
 /*
@@ -214,10 +260,21 @@ USE MusicDB;
 
 */
 
--- Solve with Common Table Expression (CTE)
+-- (1) Why this problem can't be solved with a regular LIMIT or limit with OFFSET?
 
 
--- With Ranking
+
+-- (2) Why this problem can't be solved with a regular Common Table Expression (CTE)
+
+
+
+
+
+
+
+-- (3) Solve with a windows function: RANK()
+    
+
 
 
 
@@ -230,9 +287,23 @@ USE MusicDB;
 */
 
 
--- Different Approach using a CASE executed within the COUNT aggregator instead of a subquery
 
--- A production-ready version of this problem with CTEs
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
