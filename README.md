@@ -42,7 +42,11 @@ In the `select.sql` file, students will develop a variety of SQL skills through 
 12. **Advanced Data Analysis**:
     - Conduct complex analyses involving averages, comparisons, and conditional calculations across multiple tables.
 
+
+
 ## SQL Skills from `business-requirements.sql` File
+
+**Note: this file will be added later after we cover select.sql**
 
 In the `business-requirements.sql` file, students will learn how to solve real-world business requirements using advanced SQL features. They will focus on the following key components:
 
