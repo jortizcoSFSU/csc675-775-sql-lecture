@@ -38,6 +38,7 @@ to be retrieved. But not how to retrieve it. The HOW to retrieve the data is alr
 
 /* =============================== PRACTICE PROBLEMS =================================================================*/
 
+
 -- The following set of problems are specifically designed to learn every of the concepts mentioned above.
 
 /* ===============  Problem 1 (Basic Query) ================
@@ -45,7 +46,6 @@ to be retrieved. But not how to retrieve it. The HOW to retrieve the data is alr
       Retrieve all tracks from the database.
 */
     
-
 
 /* ===============  Problem 2 (Joining Tables) ================
     Problem:
@@ -57,14 +57,12 @@ to be retrieved. But not how to retrieve it. The HOW to retrieve the data is alr
 */
 
 
-
 /* ===============  Problem 3 (Conditional Statement) ================
     Problem:
        Find all tracks in the genres "Metal" and 'Alternative & Punk' but exclude "Jazz".
        Display the track title, album title, and genre description.
 
 */
-
 
 
 /* ===============  Problem 4 (Optimizations) ================
@@ -94,8 +92,6 @@ to be retrieved. But not how to retrieve it. The HOW to retrieve the data is alr
 */
 
 
-
-
 /* ===============  Problem 6 (Cases, CTEs, VIEWs, and Subqueries) ================
    Problem:
        For each track, categorize its length as "Too Long," "Normal," or "Too Short."
@@ -111,6 +107,7 @@ to be retrieved. But not how to retrieve it. The HOW to retrieve the data is alr
        (3) A View
        (4) A Subquery
 */
+
 
 /* ===============  Problem 7 (GROUP BY and HAVING)================
     Problem:
@@ -164,10 +161,6 @@ to be retrieved. But not how to retrieve it. The HOW to retrieve the data is alr
        Find the full referral chain for a given customer.
        For example, Customer 1 -> referred 2 -> referred 3 -> referred 4
 */
-
-
-
-
 
 
 /* ===============  Problem 13 (Window Functions) ================
