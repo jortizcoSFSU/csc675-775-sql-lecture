@@ -31,14 +31,14 @@ This guide will show you how to:
 
 You only need to do this once, the first time you sync with the original repo.
 
-1. Open your terminal or Git Bash.
+1. Open your terminal or DataGrip terminal.
 2. Navigate to your local cloned fork:
    ```bash
    cd your-repo-name
    ```
 3. Add the original instructor's repository as an upstream remote:
    ```bash
-   git remote add upstream https://github.com/instructor-username/original-repo-name.git
+   git remote add upstream https://github.com/jortizcoSFSU/csc675-775-sql-lecture.git
    ```
 4. Confirm that it was added:
    ```bash
@@ -48,7 +48,7 @@ You only need to do this once, the first time you sync with the original repo.
 You should now see something like:
 ```
 origin    https://github.com/your-username/your-repo-name.git
-upstream  https://github.com/instructor-username/original-repo-name.git
+upstream  https://github.com/jortizcoSFSU/csc675-775-sql-lecture.git
 ```
 
 ---
