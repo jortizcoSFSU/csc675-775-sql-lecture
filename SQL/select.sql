@@ -32,8 +32,8 @@ USE MusicDB;
 to be retrieved. But not how to retrieve it. The HOW to retrieve the data is already handled by the engine and optimizer.
 
 
-
 */
+
 
 
 /* =============================== PRACTICE PROBLEMS =================================================================*/
@@ -77,18 +77,15 @@ to be retrieved. But not how to retrieve it. The HOW to retrieve the data is alr
 
 
 /*
-    -- (1) Find all customers who purchased the track "Bury a Friend".
+    -- Find all customers who purchased the track "Bury a Friend".
     Display the customer name and the invoice number for that track.
 
+    --  How can we optimize this query in order for it to do less work?
 
-    -- (2) Find all customers who purchased track number #1.
-    Display the customer name and the invoice number for that track.
+
 */
 
-    -- (1) We need the customer, the track and the invoice
 
-
-    -- (2) How can we optimize this query in order for it to do less work? not joining the track table because we don't need it.
 
 
 
@@ -137,12 +134,15 @@ to be retrieved. But not how to retrieve it. The HOW to retrieve the data is alr
 
 
 
+
+
 -- (2) Optimizing with a Common Table Expression. (CTE)
    
 
 
 
 -- (3) Optimizing with a View
+
 
 
 
