@@ -73,6 +73,7 @@ CREATE TABLE IF NOT EXISTS Invoice
  ON DELETE CASCADE ON UPDATE CASCADE
 );
 
+-- These two tables will not be used in the select.sql problems
 DROP TABLE IF EXISTS Sales;
 CREATE TABLE IF NOT EXISTS Sales (
 sales_id TINYINT PRIMARY KEY AUTO_INCREMENT,

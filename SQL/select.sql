@@ -31,10 +31,17 @@ USE MusicDB;
 -- What is SQL Language: SQL Language is a declarative language. This means that you only need to worry about which data needs
 to be retrieved. But not how to retrieve it. The HOW to retrieve the data is already handled by the engine and optimizer.
 
-
-*/
-
-
+ORDER OF EXECUTION
+1. FROM
+2. JOIN ON
+3. WHERE
+4. GROUP BY
+5. HAVING
+6. SELECT
+7. DISTINCT
+8. ORDER BY DESC OR ASC
+9. LIMIT
+ */
 
 /* =============================== PRACTICE PROBLEMS =================================================================*/
 
@@ -44,7 +51,17 @@ to be retrieved. But not how to retrieve it. The HOW to retrieve the data is alr
 /* ===============  Problem 1 (Basic Query) ================
    Problem:
       Retrieve all tracks from the database.
+      1. What to show? *
+      2. Where to find this? Track
+      3. Any conditions to filter? None
+
+      SELECT <what to show> FROM <where to find it> WHERE <conditions>
 */
+
+SELECT * FROM Track;
+
+
+
     
 
 /* ===============  Problem 2 (Joining Tables) ================
@@ -55,14 +72,40 @@ to be retrieved. But not how to retrieve it. The HOW to retrieve the data is alr
        (1) Using WHERE with fully qualified references
        (2) Using INNER JOIN with alias-qualified references
 */
+-- What to show? *
+-- Where to find it? Track, Album
+-- Any condition? Album.title = "Objection Overruled"
+
+-- (1)
+SELECT * FROM Track, Album
+WHERE Album.album_id = Track.album
+      AND Album.title = 'Objection Overruled';
+
+-- (2)
+SELECT *
+FROM Track
+INNER JOIN Album ON Album.album_id = Track.album
+WHERE Album.title = 'Objection Overruled';
 
 
 /* ===============  Problem 3 (Conditional Statement) ================
     Problem:
        Find all tracks in the genres "Metal" and 'Alternative & Punk' but exclude "Jazz".
        Display the track title, album title, and genre description.
-
 */
+-- With OR
+SELECT Track.title, Album.title, Genre.description
+FROM Track
+INNER JOIN Album ON Album.album_id = Track.album
+INNER JOIN Genre ON Genre.genre_id = Track.genre
+WHERE Genre.description = 'Metal' OR Genre.description = 'Alternative & Punk';
+
+-- With IN
+SELECT Track.title, Album.title, Genre.description
+FROM Track
+INNER JOIN Album ON Album.album_id = Track.album
+INNER JOIN Genre ON Genre.genre_id = Track.genre
+WHERE Genre.description IN ('Metal', 'Alternative & Punk');
 
 
 /* ===============  Problem 4 (Optimizations) ================
@@ -71,9 +114,21 @@ to be retrieved. But not how to retrieve it. The HOW to retrieve the data is alr
        Display the customer name and the invoice number for that track.
 
     Challenge:
-       Create an optimization for this problem where you only use one table instead of two.
+       Create an optimization for this problem, but now you only need to
+       display the customer id and the invoice number
 
 */
+-- Original Problem
+SELECT Customer.name, Invoice.invoice_id
+FROM Invoice
+INNER JOIN Track ON Track.track_id = Invoice.track
+INNER JOIN Customer ON Customer.customer_id = Invoice.customer
+WHERE Track.title = 'Bury a Friend';
+
+-- Follow up
+SELECT Invoice.customer AS 'Customer ID', Invoice.invoice_id AS 'Invoice ID'
+FROM Invoice
+WHERE Invoice.track = 1 AND Invoice.customer IS NOT NULL;
 
 
 /* ===============  Problem 5 (Ordering and Limiting) ================
@@ -87,9 +142,46 @@ to be retrieved. But not how to retrieve it. The HOW to retrieve the data is alr
        (2) with column alias
        (3) Show only the most recent released track
        (4) Show the oldest released track
-
-
 */
+
+-- Without column alias
+SELECT Artist.name, Track.title,
+       Album.year_released
+FROM Track
+INNER JOIN Album ON Album.album_id = Track.album
+INNER JOIN Artist ON Artist.artist_id = Track.artist
+WHERE Album.year_released BETWEEN 1990 AND 1995
+ORDER BY Album.year_released DESC;
+
+
+-- With column alias
+SELECT Artist.name AS 'Artist', Track.title AS 'Track',
+       Album.year_released AS AlbumYearReleased
+FROM Track
+INNER JOIN Album ON Album.album_id = Track.album
+INNER JOIN Artist ON Artist.artist_id = Track.artist
+WHERE Album.year_released BETWEEN 1990 AND 1995
+ORDER BY AlbumYearReleased DESC;
+
+-- Show only the most recent released track
+SELECT Artist.name AS 'Artist', Track.title AS 'Track',
+       Album.year_released AS AlbumYearReleased
+FROM Track
+INNER JOIN Album ON Album.album_id = Track.album
+INNER JOIN Artist ON Artist.artist_id = Track.artist
+WHERE Album.year_released BETWEEN 1990 AND 1995
+ORDER BY AlbumYearReleased DESC
+LIMIT 1;
+
+-- Show the oldest released track
+SELECT Artist.name AS 'Artist', Track.title AS 'Track',
+       Album.year_released AS AlbumYearReleased
+FROM Track
+INNER JOIN Album ON Album.album_id = Track.album
+INNER JOIN Artist ON Artist.artist_id = Track.artist
+WHERE Album.year_released BETWEEN 1990 AND 1995
+ORDER BY AlbumYearReleased ASC
+LIMIT 1;
 
 
 /* ===============  Problem 6 (Cases, CTEs, VIEWs, and Subqueries) ================
