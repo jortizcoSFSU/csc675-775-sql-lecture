@@ -1,10 +1,10 @@
-# 📝 Update Fork Guide
+# Update Fork Guide
 
 This guide explains how to update your forked repository with the latest instructor material covered during SQL lectures. It is especially useful if you've fallen behind or your fork is missing recent updates made during class.
 
 ---
 
-## ❓ Why Should You Do This?
+## Why Should You Do This?
 
 If you're not actively following along during lectures, you may miss updates your instructor pushes to the assignment repository — such as new starter code, example queries, test cases, or corrections.
 
@@ -19,7 +19,7 @@ By following the instructions below, you can **sync your repository** with the i
 ---
 
 
-# 🛠️ How to Update Your Forked Repository with Instructor's Latest Changes
+# How to Update Your Forked Repository with Instructor's Latest Changes
 
 This guide will show you how to:
 1. Sync your fork with the original (instructor’s) repository.
@@ -27,7 +27,7 @@ This guide will show you how to:
 
 ---
 
-## 📦 One-Time Setup (Add the Upstream Repository)
+## One-Time Setup (Add the Upstream Repository)
 
 You only need to do this once, the first time you sync with the original repo.
 
@@ -53,11 +53,11 @@ upstream  https://github.com/jortizcoSFSU/csc675-775-sql-lecture.git
 
 ---
 
-## 🔁 Method 1: Merge (Safe, Recommended for Most Students)
+## Method 1: Merge (Safe, Recommended for Most Students)
 
 This method adds the instructor’s changes to your repo without rewriting your history.
 
-### ✅ Steps:
+### Steps:
 
 ```bash
 # Step 1: Fetch the latest changes from upstream
@@ -73,17 +73,17 @@ git merge upstream/main
 git push origin main
 ```
 
-📝 If there are merge conflicts, Git will ask you to resolve them manually.
+If there are merge conflicts, Git will ask you to resolve them manually.
 
 ---
 
-## 🔄 Method 2: Rebase (Optional, For Advanced Users)
+## Method 2: Rebase (Optional, For Advanced Users)
 
 Rebase rewrites your commit history to make it as if your work was done on top of the latest instructor updates. This keeps your history cleaner but can be more confusing.
 
-### ⚠️ Only use this if you're comfortable with Git and don’t mind rewriting local commits.
+### Only use this if you're comfortable with Git and don’t mind rewriting local commits.
 
-### ✅ Steps:
+### Steps:
 
 ```bash
 # Step 1: Fetch the latest changes from upstream
@@ -96,7 +96,7 @@ git checkout main
 git rebase upstream/main
 ```
 
-### 🛑 If there are conflicts:
+### If there are conflicts:
 - Git will stop and ask you to fix them.
 - After fixing each conflict:
   ```bash
@@ -104,7 +104,7 @@ git rebase upstream/main
   git rebase --continue
   ```
 
-### ✅ Once successful:
+### Once successful:
 ```bash
 # Step 4: Push your rebased branch (force push is needed)
 git push origin main --force
@@ -124,6 +124,6 @@ git push origin main --force
 
 ---
 
-## ✅ Final Tip
+## Final Tip
 
 If you're unsure which method to use, **stick with `merge`**. It’s easier to manage and works for 99% of student workflows.
