@@ -38,6 +38,7 @@ CREATE TABLE IF NOT EXISTS Customer
  name VARCHAR(100) NOT NULL,
  zipcode INT(5) NOT NULL, 
  state CHAR(2) NOT NULL
+ -- we are suppose to create an attribute referred_by
 );
 
 -- TABLE Track
@@ -49,7 +50,7 @@ CREATE TABLE IF NOT EXISTS Track
  album TINYINT, -- FK
  artist TINYINT, -- FK 
  title VARCHAR(255) NOT NULL,
- length INT,
+ length INT, -- seconds
  FOREIGN KEY (album) REFERENCES Album(album_id)
  ON DELETE SET NULL ON UPDATE CASCADE,
  FOREIGN KEY (genre) REFERENCES Genre(genre_id)

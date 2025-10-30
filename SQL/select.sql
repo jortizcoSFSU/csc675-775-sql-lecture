@@ -200,6 +200,83 @@ LIMIT 1;
        (4) A Subquery
 */
 
+-- (1)
+SELECT Track.title,
+       Artist.name,
+       (Track.length/60),
+       CASE
+           -- you implement the logic for the condition
+           WHEN (Track.length/60) >= 6 THEN 'Too Long'
+           WHEN (Track.length/60) < 6 AND (Track.length/60) >= 4 THEN 'Normal'
+           WHEN (Track.length/60) < 4 THEN 'Too Short'
+
+       END AS 'category'
+FROM Track
+INNER JOIN Artist ON Artist.artist_id = Track.artist;
+
+-- (2) Common Table Expression (CTE)
+WITH DURATION_CTE AS (
+    -- you will implement the logic of the data that you want to reuse in memory
+    SELECT Track.title,
+           Artist.name,
+           (Track.length/60) AS duration
+    FROM Track
+    INNER JOIN Artist ON Artist.artist_id = Track.artist
+)
+SELECT *,
+       CASE
+           -- you implement the logic for the condition
+           WHEN duration >= 6 THEN 'Too Long'
+           WHEN duration < 6 AND duration >= 4 THEN 'Normal'
+           WHEN duration < 4 THEN 'Too Short'
+
+       END AS 'category'
+FROM DURATION_CTE;
+
+
+-- (3) Views hold data globally until you drop the view
+
+CREATE VIEW DURATION_CTE AS
+    SELECT Track.title,
+           Artist.name,
+           (Track.length/60) AS duration
+    FROM Track
+    INNER JOIN Artist ON Artist.artist_id = Track.artist;
+
+SELECT *,
+       CASE
+           -- you implement the logic for the condition
+           WHEN duration >= 6 THEN 'Too Long'
+           WHEN duration < 6 AND duration >= 4 THEN 'Normal'
+           WHEN duration < 4 THEN 'Too Short'
+
+       END AS 'category'
+FROM DURATION_CTE;
+
+-- Subqueries (bad for performance, but some companies only want to use them)
+SELECT *,
+       CASE
+           -- you implement the logic for the condition
+           WHEN duration >= 6 THEN 'Too Long'
+           WHEN duration < 6 AND duration >= 4 THEN 'Normal'
+           WHEN duration < 4 THEN 'Too Short'
+
+       END AS 'category'
+FROM (SELECT Track.title,
+           Artist.name,
+           (Track.length/60) AS duration
+    FROM Track
+    INNER JOIN Artist ON Artist.artist_id = Track.artist) AS subquery1;
+
+
+
+
+
+
+
+
+
+
 
 /* ===============  Problem 7 (GROUP BY and HAVING)================
     Problem:
@@ -207,21 +284,61 @@ LIMIT 1;
         Order the results by total sales in descending order.
         Display the state and the corresponding total sales.
 */
+
+
+-- WHERE: supports any attribute as long as were not computed from aggregators, it
+--        also supports iterators. Important, where can also use attributes that
+--        where not defined in the SELECT
+-- HAVING: supports aggregators, but can only filter on GROUP BY. Having does not support
+--         attributes that are not in the select unless they are part of an aggregator
+
+SELECT Customer.state, SUM(Invoice.quantity * Invoice.unit_price) AS TotalSales
+FROM Invoice
+JOIN Customer ON Customer.customer_id = Invoice.customer
+GROUP BY Customer.state
+HAVING TotalSales > 5
+ORDER BY TotalSales DESC;
+
+
+
+
   
 /* ===============  Problem 8 (MATCHING)================
     Problem:
         Find all tracks in each album where the track title contains 'o' at index position 1.
         Display the album title and track title.
 */
-    
+
+-- LIKE: activates regular expressions but an implementation of them that is
+--       easy to handle, and memory wise has good performance for simple matches
+
+-- REGEXP: activates regular expressions as learned in your degree
+
+-- LIKE
+SELECT Album.title AS 'Album', Track.title AS 'Track'
+FROM Track
+INNER JOIN Album ON Album.album_id = Track.album
+WHERE Track.title LIKE '_o%';
+
+-- REGEXP
+SELECT Album.title AS 'Album', Track.title AS 'Track'
+FROM Track
+INNER JOIN Album ON Album.album_id = Track.album
+WHERE Track.title REGEXP '^.o';
+
 
 /* ===============  Problem 9 (LENGTH)================
     Problem:
         Find the number of tracks per album where the track title length exceeds 9 characters.
         Display the album title and the count of such tracks.
 */
+SELECT Album.title AS 'Album', COUNT(Track.track_id) AS NumberOfTracks
+FROM Track
+INNER JOIN Album ON Album.album_id = Track.album
+WHERE LENGTH(Track.title) > 9
+GROUP BY Album.title;
 
-   
+
 /* ===============  Problem 10 (JOINS TYPE) ================
     Solve the following problems:
        (1) Retrieve all invoices that have customers, and all customers who have invoices.
@@ -233,10 +350,50 @@ LIMIT 1;
        (7) Retrieve all invoices without customers and customers without invoices.
 */
 
+-- (1)
+SELECT Customer.name, Invoice.invoice_id
+FROM Invoice
+INNER JOIN Customer ON Customer.customer_id = Invoice.customer;
+
+-- (2)
+SELECT Customer.name, Invoice.invoice_id
+FROM Customer
+LEFT JOIN Invoice ON Customer.customer_id = Invoice.customer;
+
+-- (3)
+SELECT Customer.name, Invoice.invoice_id
+FROM Invoice
+LEFT JOIN Customer ON Customer.customer_id = Invoice.customer;
+-- (4)
+SELECT Customer.name, Invoice.invoice_id
+FROM Customer
+LEFT JOIN Invoice ON Customer.customer_id = Invoice.customer
+WHERE Invoice.invoice_id IS NULL;
+
+-- (5)
+SELECT Customer.name, Invoice.invoice_id
+FROM Invoice
+LEFT JOIN Customer ON Customer.customer_id = Invoice.customer
+WHERE Customer.name IS NULL;
+
+
+
+-- (7)
+
+SELECT Customer.name, Invoice.invoice_id
+FROM Customer
+LEFT JOIN Invoice ON Customer.customer_id = Invoice.customer
+WHERE Invoice.invoice_id IS NULL
+UNION
+SELECT Customer.name, Invoice.invoice_id
+FROM Invoice
+LEFT JOIN Customer ON Customer.customer_id = Invoice.customer
+WHERE Customer.name IS NULL;
 
 /* ===============  Problem 11 (Challenge Problem) ================
     Problem:
-        Find all customers who purchased the same track. Display the customer name and track title.
+        Find all customers who purchased the same track.
+        Display the customer name and track title.
 
     Solve the problem using the following approaches:
         (1) Find an easy instance of the problem, and solve it.
@@ -247,12 +404,41 @@ LIMIT 1;
 
 */
 
+-- (1) Basic Instance: easy to solve
+SELECT Customer.name AS 'Customer', Track.title AS 'Track'
+FROM Invoice
+JOIN Customer ON Customer.customer_id = Invoice.customer
+JOIN Track ON Track.track_id = Invoice.track
+WHERE Track.title = 'Bury a Friend';
+
+-- (2) Now do the same as (1) for all the tracks.
+SELECT DISTINCT Customer.name AS 'Customer', Track.title AS 'Track'
+FROM Invoice inv1
+JOIN Customer ON Customer.customer_id = inv1.customer
+JOIN Track ON Track.track_id = inv1.track
+JOIN Invoice inv2 ON inv1.track = inv2.track -- checks which customers bought the same track
+WHERE inv1.customer <> inv2.customer
+ORDER BY Track.title DESC;
+
+-- (3) Challenge: using a subquery
+SELECT DISTINCT Customer.name AS 'Customer', Track.title AS 'Track'
+FROM Invoice inv1
+JOIN Customer ON Customer.customer_id = inv1.customer
+JOIN Track ON Track.track_id = inv1.track
+WHERE inv1.track IN (
+    SELECT inv2.track
+    FROM Invoice inv2
+    WHERE inv1.customer <> inv2.customer
+    )
+ORDER BY Track.title DESC;
 
 /* ===============  Problem 12 (Recursive CTEs) ================
    Problem:
        Find the full referral chain for a given customer.
        For example, Customer 1 -> referred 2 -> referred 3 -> referred 4
 */
+
+
 
 
 /* ===============  Problem 13 (Window Functions) ================
@@ -267,14 +453,21 @@ LIMIT 1;
 
 */
 
-    
+
+
+
+
 /* ===============  Problem 14 (Free Style) ================
    Testing your knowledge acquired from this lecture:
         For each album, find the number of tracks where:
             - The track title contains 'o' at index position 1.
             - The average unit price of these tracks is greater than the overall average unit price of all invoices.
         Display the album title, count of tracks, and their average unit price.
+
 */
+
+
+
 
 
 
