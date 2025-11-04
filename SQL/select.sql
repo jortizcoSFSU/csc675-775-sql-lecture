@@ -404,33 +404,7 @@ WHERE Customer.name IS NULL;
 
 */
 
--- (1) Basic Instance: easy to solve
-SELECT Customer.name AS 'Customer', Track.title AS 'Track'
-FROM Invoice
-JOIN Customer ON Customer.customer_id = Invoice.customer
-JOIN Track ON Track.track_id = Invoice.track
-WHERE Track.title = 'Bury a Friend';
 
--- (2) Now do the same as (1) for all the tracks.
-SELECT DISTINCT Customer.name AS 'Customer', Track.title AS 'Track'
-FROM Invoice inv1
-JOIN Customer ON Customer.customer_id = inv1.customer
-JOIN Track ON Track.track_id = inv1.track
-JOIN Invoice inv2 ON inv1.track = inv2.track -- checks which customers bought the same track
-WHERE inv1.customer <> inv2.customer
-ORDER BY Track.title DESC;
-
--- (3) Challenge: using a subquery
-SELECT DISTINCT Customer.name AS 'Customer', Track.title AS 'Track'
-FROM Invoice inv1
-JOIN Customer ON Customer.customer_id = inv1.customer
-JOIN Track ON Track.track_id = inv1.track
-WHERE inv1.track IN (
-    SELECT inv2.track
-    FROM Invoice inv2
-    WHERE inv1.customer <> inv2.customer
-    )
-ORDER BY Track.title DESC;
 
 /* ===============  Problem 12 (Recursive CTEs) ================
    Problem:
