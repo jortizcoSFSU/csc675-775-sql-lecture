@@ -376,7 +376,14 @@ FROM Invoice
 LEFT JOIN Customer ON Customer.customer_id = Invoice.customer
 WHERE Customer.name IS NULL;
 
-
+-- (6)
+SELECT Customer.name, Invoice.invoice_id
+FROM Customer
+LEFT JOIN Invoice ON Customer.customer_id = Invoice.customer
+UNION
+SELECT Customer.name, Invoice.invoice_id
+FROM Invoice
+LEFT JOIN Customer ON Customer.customer_id = Invoice.customer;
 
 -- (7)
 
@@ -403,6 +410,8 @@ WHERE Customer.name IS NULL;
         Solve the problem using a subquery.
 
 */
+
+
 
 
 
