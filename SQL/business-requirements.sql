@@ -51,9 +51,13 @@ Permissions: Permissions in SQL define the access control rules that determine w
    Each business requirement in this file must be implemented using at least one of the specified components.
 */
 
+-- right now the delimiter is semicolon ;
 
+-- mem stack
 
+USE MusicDB;
 
+DELIMITER $$
 
 
 /*
@@ -76,6 +80,15 @@ Business Requirement #1: Identify the most popular track in each state.
 Business Requirement #2: Update a customer's total purchases in the Sales table
                          each time a new invoice is created.
 */
+DROP TRIGGER IF EXISTS CUSTOMER_TOTAL_SALES_BACKUP_TRG $$
+
+CREATE TRIGGER CUSTOMER_TOTAL_SALES_BACKUP_TRG AFTER INSERT ON Invoice
+FOR EACH ROW -- this is looping only over the affected rows that were inserted in the invoice table
+    BEGIN
+        -- TODO: implement this trigger tomorrow.
+
+    END $$
+
 
 
 
@@ -124,3 +137,4 @@ Business Requirement #6: Implement a monthly aggregation of sales. Each month, t
                          the MonthlySalesAggregation table.
 */
 
+DELIMITER ;
