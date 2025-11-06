@@ -34,7 +34,7 @@ to be retrieved. But not how to retrieve it. The HOW to retrieve the data is alr
 ORDER OF EXECUTION
 1. FROM
 2. JOIN ON
-3. WHERE
+3. WHERE -- trying to access ranked alias, but ranked alias is created in SELECT
 4. GROUP BY
 5. HAVING
 6. SELECT
@@ -385,7 +385,7 @@ SELECT Customer.name, Invoice.invoice_id
 FROM Invoice
 LEFT JOIN Customer ON Customer.customer_id = Invoice.customer;
 
--- (7)
+-- (7) Solution for extra credit quiz given in section 04 on Wednesday, October 29
 
 SELECT Customer.name, Invoice.invoice_id
 FROM Customer
@@ -411,8 +411,41 @@ WHERE Customer.name IS NULL;
 
 */
 
+-- (1) Find all the customers who purchased the track 'Bury a Friend' (easy problem)
+SELECT DISTINCT Customer.name, Track.title
+FROM Invoice
+JOIN Customer ON Customer.customer_id = Invoice.customer
+JOIN Track ON Track.track_id = Invoice.track
+WHERE Track.title = 'Bury a Friend';
 
+-- (2) Original problem
+-- challenge: how can we determine two customers which bought the same track based on invoice inspection
+-- the best approach is to join another invoice table inv2, then we know that two customers got the same track if
+-- inv1.track = inv2.track
+-- trying to determine if the inv1.track = inv2.track
+SELECT DISTINCT Customer.name, Track.title -- (6)
+FROM Invoice inv1 -- (1)
+JOIN Customer ON Customer.customer_id = inv1.customer -- pk = fk -- (2)
+JOIN Track ON Track.track_id = inv1.track -- pk = fk -- (3)
+JOIN Invoice inv2 ON inv1.track = inv2.track -- (4)
+WHERE inv1.customer <> inv2.customer -- != is the same as <> -- (5)
+ORDER BY Track.title DESC; -- (7)
 
+-- (3) same problem using a subquery
+    -- we are going to consider here where to put the subquery because subqueries can actually be placed anywhere
+SELECT DISTINCT Customer.name, Track.title -- (8)
+FROM Invoice inv1 -- (1)
+JOIN Customer ON Customer.customer_id = inv1.customer -- (2)
+JOIN Track ON Track.track_id = inv1.track -- (3)
+WHERE inv1.track IN ( -- (4)
+    -- this is a subquery or inner query
+    SELECT inv2.track -- (7)
+    FROM Invoice inv2 -- (5)
+    WHERE inv1.customer <> inv2.customer -- (6)
+    )
+ORDER BY Track.title DESC; -- (9)
+
+-- Which one do you think is faster (2) or (3)? (2) is faster.
 
 
 /* ===============  Problem 12 (Recursive CTEs) ================
@@ -420,6 +453,28 @@ WHERE Customer.name IS NULL;
        Find the full referral chain for a given customer.
        For example, Customer 1 -> referred 2 -> referred 3 -> referred 4
 */
+
+-- global reference.
+SET @top_of_chain_customer = 5;
+
+WITH RECURSIVE RECURSIVE_CTE AS (
+    -- base case
+    SELECT c1.name, c1.customer_id, c1.refereed_by
+    FROM Customer c1
+    WHERE c1.customer_id = @top_of_chain_customer
+
+
+    UNION ALL
+
+    SELECT c2.name, c2.customer_id, c2.refereed_by
+    FROM Customer c2
+    JOIN RECURSIVE_CTE rec_cte ON rec_cte.refereed_by = c2.customer_id-- recursive part
+    WHERE c2.refereed_by IS NOT NULL
+
+)
+SELECT * FROM RECURSIVE_CTE;
+
+
 
 
 
@@ -436,8 +491,43 @@ WHERE Customer.name IS NULL;
 
 */
 
+-- (1) WITH LIMIT WITHOUT OFFSET (not a good solution)
+SELECT Track.title AS TrackTitle,
+       SUM(Invoice.unit_price * Invoice.quantity) AS TotalSales
+FROM Invoice
+JOIN Track ON Track.track_id = Invoice.track
+GROUP BY Track.title
+ORDER BY TotalSales DESC
+LIMIT 2;
 
 
+-- (2) LIMIT WITH OFFSET. LIMIT <offset> <selection> (e.g., LIMIT 3,2 will ignore the top 3 tracks, and will select the next 2)
+SELECT Track.title AS TrackTitle,
+       SUM(Invoice.unit_price * Invoice.quantity) AS TotalSales
+FROM Invoice
+JOIN Track ON Track.track_id = Invoice.track
+GROUP BY Track.title
+ORDER BY TotalSales DESC
+LIMIT 1, 1; -- problem is that this is not accounting for ties, and the problem requires accounting for ties
+
+
+-- (3) RANKING
+WITH ALL_DATA_CTE AS (
+    -- we compute all the tracks and their total sales without ranking
+    SELECT Track.title AS TrackTitle,
+       SUM(Invoice.unit_price * Invoice.quantity) AS TotalSales
+    FROM Invoice
+    JOIN Track ON Track.track_id = Invoice.track
+    GROUP BY Track.title
+), -- inner CTE
+RANKED_DATA AS (
+    SELECT *,
+       RANK() OVER(ORDER BY TotalSales DESC) AS ranked
+       FROM ALL_DATA_CTE
+)
+SELECT *
+FROM RANKED_DATA
+WHERE ranked = 2; -- now we have access to ranked alias
 
 
 /* ===============  Problem 14 (Free Style) ================
@@ -448,6 +538,19 @@ WHERE Customer.name IS NULL;
         Display the album title, count of tracks, and their average unit price.
 
 */
+
+SELECT a.title AS AlbumTitle, -- non-aggregator attribute
+       (SELECT COUNT(t1.track_id)
+               FROM Track t1
+               WHERE t1.album = a.album_id AND
+               t1.title LIKE '_o%') AS TrackCount, -- non-aggregator attribute
+       AVG(Invoice.unit_price) AS AVGUnitPrice -- aggregator attribute
+FROM Invoice
+JOIN Track ON Track.track_id = Invoice.track
+JOIN Album a ON a.album_id = Track.album
+GROUP BY AlbumTitle, TrackCount
+HAVING AVGUnitPrice > (SELECT AVG(unit_price) FROM Invoice) AND TrackCount > 0; -- computing the total avg unit price for all the tracks in the database
+
 
 
 

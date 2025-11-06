@@ -38,7 +38,6 @@ CREATE TABLE IF NOT EXISTS Customer
  name VARCHAR(100) NOT NULL,
  zipcode INT(5) NOT NULL, 
  state CHAR(2) NOT NULL
- -- we are suppose to create an attribute referred_by
 );
 
 -- TABLE Track
