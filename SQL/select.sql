@@ -411,32 +411,53 @@ JOIN Customer ON Customer.customer_id = Invoice.customer
 JOIN Track ON Track.track_id = Invoice.track
 WHERE Track.title = 'Bury a Friend';
 
--- (2) Now do the same as (1) for all the tracks.
+-- (2) Solving the problem for all the tracks
 SELECT DISTINCT Customer.name AS 'Customer', Track.title AS 'Track'
 FROM Invoice inv1
 JOIN Customer ON Customer.customer_id = inv1.customer
 JOIN Track ON Track.track_id = inv1.track
-JOIN Invoice inv2 ON inv1.track = inv2.track -- checks which customers bought the same track
-WHERE inv1.customer <> inv2.customer
-ORDER BY Track.title DESC;
+JOIN Invoice inv2 ON inv1.track = inv2.track
+WHERE inv1.customer <> inv2.customer; -- <> is the same as !=
+
 
 -- (3) Challenge: using a subquery
-SELECT DISTINCT Customer.name AS 'Customer', Track.title AS 'Track'
-FROM Invoice inv1
-JOIN Customer ON Customer.customer_id = inv1.customer
-JOIN Track ON Track.track_id = inv1.track
-WHERE inv1.track IN (
-    SELECT inv2.track
-    FROM Invoice inv2
-    WHERE inv1.customer <> inv2.customer
-    )
-ORDER BY Track.title DESC;
+SELECT DISTINCT Customer.name AS 'Customer', Track.title AS 'Track' -- (7)
+FROM Invoice inv1 -- (1)
+JOIN Customer ON Customer.customer_id = inv1.customer -- (2)
+JOIN Track ON Track.track_id = inv1.track -- (3)
+WHERE inv1.track IN ( -- (3)
+    SELECT inv2.track -- (6)
+    FROM Invoice inv2 -- (4)
+    WHERE inv1.customer <> inv2.customer -- (5)
+    );
+
 
 /* ===============  Problem 12 (Recursive CTEs) ================
    Problem:
        Find the full referral chain for a given customer.
        For example, Customer 1 -> referred 2 -> referred 3 -> referred 4
 */
+
+WITH RECURSIVE CUSTOMER_REFERRAL_CTE AS (
+    -- this is going to return customer 2 refereed by customer 5
+    SELECT c1.name,
+           c1.customer_id,
+           c1.refereed_by
+    FROM Customer c1
+    WHERE c1.customer_id = 5
+
+    UNION ALL
+
+    SELECT c2.name,
+           c2.customer_id,
+           c2.refereed_by
+    FROM Customer c2
+    JOIN CUSTOMER_REFERRAL_CTE cr_cte ON
+         cr_cte.customer_id = c2.refereed_by
+)
+SELECT * FROM CUSTOMER_REFERRAL_CTE;
+
+
 
 
 
@@ -452,9 +473,42 @@ ORDER BY Track.title DESC;
         (3) Using RANK function
 
 */
+-- (1) Limit without offset (not a solution)
+SELECT Track.title AS TrackTitle,
+       SUM(Invoice.quantity * Invoice.unit_price) AS TotalSales
+FROM Invoice
+JOIN Track ON Track.track_id = Invoice.track
+GROUP BY TrackTitle
+ORDER BY TotalSales DESC
+LIMIT 2;
 
+-- Limit with offset LIMIT offset selection LIMIT 2, 3
 
+SELECT Track.title AS TrackTitle,
+       SUM(Invoice.quantity * Invoice.unit_price) AS TotalSales
+FROM Invoice
+JOIN Track ON Track.track_id = Invoice.track
+GROUP BY TrackTitle
+ORDER BY TotalSales DESC
+LIMIT 1,1;
 
+-- Windows functions ranking
+WITH CTE_RAW_DATA AS (
+    SELECT Track.title AS TrackTitle,
+       SUM(Invoice.quantity * Invoice.unit_price) AS TotalSales
+    FROM Invoice
+    JOIN Track ON Track.track_id = Invoice.track
+    GROUP BY TrackTitle
+),
+RANKING_CTE AS (
+    SELECT *,
+       RANK () OVER(ORDER BY TotalSales DESC) AS ranked
+FROM CTE_RAW_DATA
+
+)
+SELECT *
+FROM RANKING_CTE
+WHERE ranked = 2;
 
 
 /* ===============  Problem 14 (Free Style) ================
@@ -465,6 +519,21 @@ ORDER BY Track.title DESC;
         Display the album title, count of tracks, and their average unit price.
 
 */
+SELECT a.title AS AlbumTitle,
+       (SELECT COUNT(t2.track_id)
+        FROM Track t2
+        WHERE a.album_id = t2.album AND
+        t2.title LIKE '_o%' ) AS TrackCount,
+       AVG(i.unit_price) AS AVGUnitPrice
+FROM Invoice i
+JOIN Track t ON t.track_id = i.track
+JOIN Album a ON a.album_id = t.album
+GROUP BY a.title, TrackCount
+HAVING AVGUnitPrice > (SELECT AVG(unit_price) FROM Invoice) AND TrackCount > 0
+ORDER BY AVGUnitPrice DESC;
+
+
+
 
 
 
