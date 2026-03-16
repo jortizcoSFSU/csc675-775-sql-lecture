@@ -1,0 +1,43 @@
+# =========================
+# JetBrains / DataGrip
+# =========================
+.idea/
+*.iml
+
+# Workspace settings
+.idea/workspace.xml
+.idea/tasks.xml
+.idea/usage.statistics.xml
+
+# Data sources (contain credentials)
+.idea/dataSources/
+.idea/dataSources.ids
+.idea/dataSources.local.xml
+.idea/dataSources.xml
+
+# Database introspection cache
+.idea/sqlDataSources.xml
+.idea/dictionaries
+
+# =========================
+# Logs
+# =========================
+*.log
+
+# =========================
+# OS files
+# =========================
+.DS_Store
+Thumbs.db
+
+# =========================
+# Temporary files
+# =========================
+*.tmp
+*.temp
+*.swp
+
+# =========================
+# SQL private solutions
+# =========================
+SQL/solutions/

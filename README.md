@@ -68,8 +68,8 @@ In the `business-requirements.sql` file, students will learn how to solve real-w
 6. **Business Requirement Solutions**:
    - Implement solutions for common business problems such as updating customer purchases, summarizing sales, preserving data on deletion, and more, while ensuring correct data integrity and security.
 
-## Instructions for Running the `create.sql` and `inserts.sql` Scripts in DataGrip
+## Instructions for Running the `schema.sql` and `inserts.sql` Scripts in DataGrip
 
-The repository includes two important SQL scripts: `create.sql` and `inserts.sql`. These scripts are designed to create and populate the database. The **SQL/README.md** file contains detailed instructions on how to connect to the MySQL database and run these scripts in **DataGrip**.
+The repository includes two important SQL scripts: `schema.sql` and `inserts.sql`. These scripts are designed to create and populate the database. The **SQL/README.md** file contains detailed instructions on how to connect to the MySQL database and run these scripts in **DataGrip**.
 
-Follow the instructions in the **SQL/README.md** file to connect to your MySQL database and execute the `create.sql` and `inserts.sql` scripts to set up the database before working on the practice problems in `select.sql` and `business-requirements.sql`.
+Follow the instructions in the **SQL/README.md** file to connect to your MySQL database and execute the `schema.sql` and `inserts.sql` scripts to set up the database before working on the practice problems in `select.sql` and `business-requirements.sql`.

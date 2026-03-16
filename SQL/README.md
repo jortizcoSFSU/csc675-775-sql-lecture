@@ -1,6 +1,6 @@
 # Instructions for Running SQL Scripts in DataGrip
 
-Follow the steps below to connect to your MySQL database and execute the `create.sql` and `inserts.sql` scripts in **DataGrip**.
+Follow the steps below to connect to your MySQL database and execute the `schema.sql` and `inserts.sql` scripts in **DataGrip**.
 
 ## Step 1: Connect to Your MySQL Database in DataGrip
 
@@ -21,10 +21,10 @@ Follow the steps below to connect to your MySQL database and execute the `create
    - Click **Test Connection** to ensure the connection is successful.
    - Once the connection is successful, click **OK**.
 
-## Step 2: Running the `create.sql` and `inserts.sql` Scripts
+## Step 2: Running the `schema.sql` and `inserts.sql` Scripts
 
-1. **Open the `create.sql` Script**:
-   - In the **Files** workspace, click on `create.sql`.
+1. **Open the `schema.sql` Script**:
+   - In the **Files** workspace, click on `schema.sql`.
    - The script will open in a new tab.
    - Select all the code in the script, and click the **Run** button (or press `Ctrl + Enter`) to execute it.
 
