@@ -1,3 +1,0 @@
-Use sakila;-- This file will contain unit tests for some of the code covered in this course.
-
-SELECT * FROM Customer;
