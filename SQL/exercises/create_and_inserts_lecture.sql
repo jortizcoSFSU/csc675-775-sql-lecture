@@ -52,7 +52,6 @@ CREATE TABLE  Bank_accounts (
 
 
 );
-
-INSERT INTO Users (email, name, last_name, age ) VALUES ('NULL', 'Jose', 'Ortiz', 18),
-                                                        ('john@sfsu.edu', 'John',  'Parra', 19);
+INSERT INTO Users (email, name, last_name, age ) VALUES ('jortizco@sfsu.edu', 'Jose', 'Ortiz', 18),
+                                                        ('john@sfsu.edu', 'John',  'Sun', 19);
 SELECT * FROM Users;
