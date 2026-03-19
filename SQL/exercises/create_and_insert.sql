@@ -1,1 +1,0 @@
-# Lecture to create tables and insert data
