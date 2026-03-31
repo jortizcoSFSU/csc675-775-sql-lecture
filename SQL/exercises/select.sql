@@ -38,7 +38,14 @@ ORDER OF EXECUTION
 7. DISTINCT
 8. ORDER BY DESC OR ASC
 9. LIMIT
+
+
+
+
  */
+
+
+USE MusicDB;
 
 /* =============================== PRACTICE PROBLEMS =================================================================*/
 
@@ -48,7 +55,13 @@ ORDER OF EXECUTION
 /* ===============  Problem 1 (Basic Query) ================
    Problem:
       Retrieve all tracks from the database.
+
+      What to find: *
+      Where to find this: TRACK
+      Any conditions needed: None
 */
+
+SELECT * FROM Track;
 
 
 /* ===============  Problem 2 (Joining Tables) ================
@@ -58,13 +71,43 @@ ORDER OF EXECUTION
     Solve the problem using the two following approaches:
        (1) Using WHERE with fully qualified references
        (2) Using INNER JOIN with alias-qualified references
+
+   what to find: *
+   where to find them: Track, Album
+   Any conditions needed: filter by album "Objection Overruled"
 */
+
+-- JOINING TABLES USING WHERE.
+SELECT *
+FROM Track, Album
+WHERE Track.album = Album.album_id AND
+      Album.title = 'Objection Overruled';
+
+-- with INNER JOIN
+SELECT *
+FROM Track
+INNER JOIN Album ON Track.album = Album.album_id
+WHERE Album.title = 'Objection Overruled';
 
 /* ===============  Problem 3 (Conditional Statement) ================
     Problem:
        Find all tracks in the genres "Metal" and 'Alternative & Punk' but exclude "Jazz".
        Display the track title, album title, and genre description.
 */
+
+-- Tables calls
+SELECT Track.title AS "Track Title", Album.title AS "Album Title", Genre.description AS "Genre Description"
+FROM Track
+INNER JOIN Album ON Album.album_id = Track.album
+INNER JOIN Genre ON Genre.genre_id = Track.genre
+WHERE Genre.description IN ('Metal', 'Alternative & Punk');
+
+-- Table Alias
+SELECT tr.title AS "Track Title", al.title AS "Album Title", gr.description AS "Genre Description"
+FROM Track tr
+INNER JOIN Album al ON al.album_id = tr.album
+INNER JOIN Genre gr ON gr.genre_id = tr.genre
+WHERE gr.description IN ('Metal', 'Alternative & Punk');
 
 
 /* ===============  Problem 4 (Optimizations) ================
@@ -78,6 +121,20 @@ ORDER OF EXECUTION
 
 */
 
+-- Original Problem
+SELECT Customer.name AS Customer, Invoice.invoice_id AS Invoice
+FROM Invoice
+JOIN Customer ON Customer.customer_id = Invoice.customer
+JOIN Track ON Track.track_id = Invoice.track
+WHERE Track.title = 'Bury a Friend';
+
+-- Challenge
+SELECT Invoice.customer AS Customer, Invoice.invoice_id AS Invoice
+FROM Invoice
+JOIN Track ON Track.track_id = Invoice.track
+WHERE Track.title = 'Bury a Friend';
+
+
 /* ===============  Problem 5 (Ordering and Limiting) ================
     Problem:
        Retrieve all tracks released between years 1990 and 1995 (both inclusive).
@@ -90,6 +147,50 @@ ORDER OF EXECUTION
        (3) Show only the most recent released track
        (4) Show the oldest released track
 */
+-- (1)
+SELECT Artist.name, Track.title, Album.year_released
+FROM Track
+JOIN Artist ON Artist.artist_id = Track.artist
+JOIN Album ON Album.album_id = Track.album
+WHERE Album.year_released BETWEEN 1990 AND 1995
+ORDER BY Album.year_released DESC;
+-- (2)
+SELECT Artist.name AS Artist, Track.title AS Track, Album.year_released AS "Track Year Released"
+FROM Track
+JOIN Artist ON Artist.artist_id = Track.artist
+JOIN Album ON Album.album_id = Track.album
+WHERE Album.year_released BETWEEN 1990 AND 1995
+ORDER BY Album.year_released DESC;
+
+
+
+-- (2.1 # 2 optimized)
+
+SELECT Artist.name AS Artist, Track.title AS Track, Album.year_released AS TrackYear
+FROM Track
+JOIN Artist ON Artist.artist_id = Track.artist
+JOIN Album ON Album.album_id = Track.album
+WHERE Album.year_released BETWEEN 1990 AND 1995
+ORDER BY TrackYear DESC;
+
+
+-- (3)
+SELECT Artist.name AS Artist, Track.title AS Track, Album.year_released AS TrackYear
+FROM Track
+JOIN Artist ON Artist.artist_id = Track.artist
+JOIN Album ON Album.album_id = Track.album
+WHERE Album.year_released BETWEEN 1990 AND 1995
+ORDER BY TrackYear DESC
+LIMIT 1;
+
+-- (4)
+SELECT Artist.name AS Artist, Track.title AS Track, Album.year_released AS TrackYear
+FROM Track
+JOIN Artist ON Artist.artist_id = Track.artist
+JOIN Album ON Album.album_id = Track.album
+WHERE Album.year_released BETWEEN 1990 AND 1995
+ORDER BY TrackYear ASC
+LIMIT 1; -- offset and limit
 
 
 /* ===============  Problem 6 (Cases, CTEs, VIEWs, and Subqueries) ================
@@ -107,6 +208,18 @@ ORDER OF EXECUTION
        (3) A View
        (4) A Subquery
 */
+
+-- (1)
+SELECT Track.title AS Track,
+       Artist.name AS Artist,
+       Track.length/60 AS Duration,
+       CASE
+          WHEN Track.length/60 >= 6 THEN 'Too Long'
+          WHEN Track.length/60 < 6 AND Track.length/60 >=4 THEN 'Normal'
+          WHEN Track.length/60 < 4 THEN 'Too Short'
+       END AS Category
+FROM Track
+JOIN Artist ON Artist.artist_id = Track.artist;
 
 /* ===============  Problem 7 (GROUP BY and HAVING)================
     Problem:
