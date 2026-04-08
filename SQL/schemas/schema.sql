@@ -66,7 +66,7 @@ CREATE TABLE IF NOT EXISTS Invoice
  invoice_id TINYINT PRIMARY KEY,
  track TINYINT NOT NULL, -- FK
  customer TINYINT, -- FK
- quantity INT DEFAULT 0, 
+ quantity INT DEFAULT 0, -- (quantity * unitprice)  sales
  unit_price DECIMAL (5,2),
  FOREIGN KEY (track) REFERENCES Track(track_id)
  ON DELETE CASCADE ON UPDATE CASCADE,
