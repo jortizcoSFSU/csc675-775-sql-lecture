@@ -87,10 +87,10 @@ ON DELETE CASCADE ON UPDATE CASCADE
 DROP TABLE IF EXISTS CompanySales;
 CREATE TABLE IF NOT EXISTS CompanySales (
 sales_id TINYINT PRIMARY KEY AUTO_INCREMENT,
-customer_id TINYINT NOT NULL,
-name VARCHAR(100) NOT NULL,
-zipcode INT(5) NOT NULL, 
-state CHAR(2) NOT NULL,
-total_sales DECIMAL(8,2) DEFAULT 0.00
+customer_id TINYINT NOT NULL, -- Customer table
+name VARCHAR(100) NOT NULL, -- Customer table
+zipcode INT(5) NOT NULL,  -- Customer table
+state CHAR(2) NOT NULL, -- Customer table
+total_sales DECIMAL(8,2) DEFAULT 0.00 -- Sales
 );
 

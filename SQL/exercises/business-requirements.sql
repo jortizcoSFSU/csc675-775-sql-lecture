@@ -51,6 +51,10 @@ Permissions: Permissions in SQL define the access control rules that determine w
    Each business requirement in this file must be implemented using at least one of the specified components.
 */
 
+USE MusicDB;
+
+DELIMITER $$
+
 /*
 Business Requirement #1: Identify the most popular track in each state.
                          Display the track title and the state where it was purchased.
@@ -62,11 +66,65 @@ Business Requirement #1: Identify the most popular track in each state.
 
 */
 
+DROP PROCEDURE IF EXISTS POPULAR_TRACK_PER_STATE_PRC $$
+
+CREATE PROCEDURE POPULAR_TRACK_PER_STATE_PRC ()
+  BEGIN
+      -- Our logic
+   WITH ALL_DATA_CTE AS (SELECT Track.title           as TrackTitle,
+                                Customer.state        as CustomerState,
+                                -- RANK() ranks and when there is a tie the next rank is skipping one of the ranks
+                                SUM(Invoice.quantity) AS SalesQuantity
+                         FROM Invoice
+                                  JOIN Track ON Track.track_id = Invoice.track
+                                  JOIN Customer ON Customer.customer_id = Invoice.customer
+                         GROUP BY TrackTitle, CustomerState
+       ),
+       RANKED_CTE AS (SELECT *,
+                             RANK() OVER (PARTITION BY CustomerState ORDER BY SalesQuantity DESC) AS ranked
+                      FROM ALL_DATA_CTE
+       )
+       SELECT * FROM RANKED_CTE WHERE ranked = 1
+       ORDER BY SalesQuantity DESC;
+
+
+
+  END $$
+
+
 
 /*
 Business Requirement #2: Update a customer's total purchases in the Sales table
                          each time a new invoice is created.
 */
+
+DROP TRIGGER IF EXISTS COMPUTE_TOTAL_SALES_TRG $$
+
+CREATE TRIGGER COMPUTE_TOTAL_SALES_TRG AFTER INSERT ON Invoice
+  FOR EACH ROW
+    BEGIN
+        -- your logic here
+        DECLARE tmp_sales DECIMAL(10,2) DEFAULT 0.00;
+        DECLARE customer_exists BOOLEAN DEFAULT FALSE;
+        SET tmp_sales = NEW.quantity * NEW.unit_price;
+
+        -- IF the customer exists in the Sales table, then we update the actual total sales adding the
+        -- new tmp_sales to this value. Otherwise, we insert this customer in the sales table including
+        -- the new tmp_sales
+
+        -- 1 way to do this
+        -- SET customer_exists = (SELECT COUNT(customer) FROM Sales WHERE customer = NEW.customer);
+
+        -- 2 way
+        SELECT EXISTS (SELECT 1 FROM Sales WHERE customer = NEW.customer) INTO customer_exists;
+
+        IF customer_exists THEN
+           UPDATE Sales SET total_sales = total_sales + tmp_sales WHERE customer = NEW.customer;
+        ELSE
+           INSERT INTO Sales (customer, total_sales) VALUES (NEW.customer, tmp_sales);
+        END IF;
+    END $$
+
 
 /*
 Business Requirement #3: Ensure that when a customer is deleted from the database,
@@ -75,6 +133,16 @@ Business Requirement #3: Ensure that when a customer is deleted from the databas
 
 
 */
+DROP TRIGGER IF EXISTS BACKUP_CUSTOMER_SALES_TRG $$
+
+CREATE TRIGGER BACKUP_CUSTOMER_SALES_TRG BEFORE DELETE ON Customer
+    FOR EACH ROW
+      BEGIN
+          DECLARE new_sales DECIMAL(10,2) DEFAULT 0.00;
+          SET new_sales = (SELECT total_sales FROM Sales WHERE customer = OLD.customer_id);
+          INSERT INTO CompanySales (customer_id, name, zipcode, state, total_sales)
+          VALUE (OLD.customer_id, OLD.name, OLD.zipcode, OLD.state, new_sales);
+      END $$
 
 /*
 Business Requirement #4: The company needs to generate a sales report that summarizes
@@ -85,17 +153,152 @@ Business Requirement #4: The company needs to generate a sales report that summa
                          any aggregators for now.
 */
 
+-- With Aggregator SUM()
+DROP PROCEDURE IF EXISTS SalesReportWithAggregator;
+CREATE PROCEDURE SalesReportWithAggregator (yearReleased INT)
+    BEGIN
+        SELECT Genre.description,
+               SUM(Invoice.quantity * Invoice.unit_price) AS TotalSales
+        FROM Invoice
+        JOIN Track ON Track.track_id = Invoice.track
+        JOIN Album ON Album.album_id = Track.album
+        JOIN Genre ON Genre.genre_id = Track.genre
+        WHERE Album.year_released = yearReleased
+        GROUP BY Genre.description
+        ORDER BY TotalSales DESC;
+
+    END $$
+
+-- Without SUM()
+DROP PROCEDURE IF EXISTS SalesReportWithoutAggregator;
+CREATE PROCEDURE SalesReportWithoutAggregator (yearReleased INT)
+    BEGIN
+        DECLARE tmp_genre VARCHAR(55);
+        DECLARE tmp_sales DECIMAL(10,2) DEFAULT 0.00;
+        DECLARE genre_exists BOOLEAN DEFAULT FALSE;
+        DECLARE done BOOLEAN DEFAULT FALSE;
+
+        DECLARE tmp_data_cursor CURSOR FOR
+        SELECT Genre.description,
+               Invoice.quantity * Invoice.unit_price AS TotalSales
+        FROM Invoice
+        JOIN Track ON Track.track_id = Invoice.track
+        JOIN Album ON Album.album_id = Track.album
+        JOIN Genre ON Genre.genre_id = Track.genre
+        WHERE Album.year_released = yearReleased
+        ORDER BY TotalSales DESC;
+
+        DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = TRUE;
+
+        DROP TEMPORARY TABLE IF EXISTS FinalReport;
+
+        CREATE TEMPORARY TABLE FinalReport (
+            genre VARCHAR(55) PRIMARY KEY,
+            total_sales DECIMAL(10,2) DEFAULT 0.00
+        );
+
+        OPEN tmp_data_cursor;
+           -- logic iterating over the data is implemented here.
+            my_for_loop:LOOP
+                FETCH tmp_data_cursor INTO tmp_genre, tmp_sales;
+                IF done THEN
+                    LEAVE my_for_loop;
+                END IF;
+
+                SELECT EXISTS(SELECT 1 FROM FinalReport WHERE genre = tmp_genre) INTO genre_exists;
+
+                IF genre_exists THEN
+                    UPDATE FinalReport SET total_sales = total_sales + tmp_sales WHERE genre = tmp_genre;
+                ELSE
+                    INSERT INTO FinalReport (genre, total_sales) VALUES (tmp_genre, tmp_sales);
+                END IF;
+
+            END LOOP my_for_loop;
+
+        -- In MySQL CLOSE <Cursor> is closing the cursor, but also it is deallocating the cursor.
+        CLOSE tmp_data_cursor;
+
+        SELECT * FROM FinalReport;
+
+    END $$
+
+
 /*
 Business Requirement #5: Implement a feature to calculate and display the average sales amount
                          for a specific customer, identified by their customer ID, to support
                          personalized sales analysis.
 */
 
+DROP FUNCTION IF EXISTS AVG_SALES_PER_CUSTOMER $$
+
+CREATE FUNCTION  AVG_SALES_PER_CUSTOMER (customerID INT) RETURNS DECIMAL(10,2) DETERMINISTIC
+  BEGIN
+        DECLARE avg_sales DECIMAL(10, 2);
+        SELECT AVG(Invoice.quantity * Invoice.unit_price)
+        INTO avg_sales
+        FROM Invoice
+        WHERE customer = customerID;
+
+        RETURN avg_sales;
+
+  END $$
+
+
+
 /*
 Business Requirement #6: Implement a monthly aggregation of sales. Each month, the system
                          must summarize sales by state with a timestamp and insert it into
                          the MonthlySalesAggregation table.
 */
+
+DROP TABLE IF EXISTS MonthlySalesAggregation;
+
+CREATE TABLE MonthlySalesAggregation (
+    state CHAR(2) PRIMARY KEY,
+    total_sales DECIMAL(10, 2) DEFAULT 0.00,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+DROP EVENT IF EXISTS ReportEvent;
+
+CREATE EVENT ReportEvent
+ON SCHEDULE EVERY 15 SECOND
+STARTS CURRENT_TIMESTAMP
+ENDS CURRENT_TIMESTAMP + INTERVAL 1 MINUTE
+COMMENT 'This event is creating a monthy report of total sales by state'
+DO
+    -- your event logic
+    BEGIN
+        TRUNCATE TABLE MonthlySalesAggregation;
+        INSERT INTO MonthlySalesAggregation (state, total_sales)
+        SELECT Customer.state,
+               SUM(Invoice.quantity * Invoice.unit_price) AS TotalSales
+        FROM Invoice
+        JOIN Customer ON Customer.customer_id = Invoice.customer
+        GROUP BY Customer.state
+        ORDER BY TotalSales DESC;
+
+
+    END $$
+
+DELIMITER ;
+
+-- CALL POPULAR_TRACK_PER_STATE_PRC();
+-- INSERT INTO Invoice (invoice_id, track, customer, quantity, unit_price) VALUES (22,9,8,3,10);
+-- DELETE FROM Customer WHERE customer_id = 3;
+-- SELECT * FROM CompanySales;
+
+-- SET @customerID = 4;
+
+-- SELECT AVG_SALES_PER_CUSTOMER(@customerID) as AvgPerCustomer;
+
+-- SELECT * FROM MonthlySalesAggregation;
+
+
+SET @yearReleased = 1993;
+
+CALL SalesReportWithAggregator(@yearReleased); -- with aggregator
+CALL SalesReportWithoutAggregator(@yearReleased); -- without aggregator
 
 
 
