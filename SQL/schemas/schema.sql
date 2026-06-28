@@ -9,7 +9,7 @@ USE MusicDB;
 DROP TABLE IF EXISTS Genre;
 CREATE TABLE IF NOT EXISTS Genre 
 (
- genre_id TINYINT PRIMARY KEY,
+ genre_id TINYINT PRIMARY KEY AUTO_INCREMENT,
  description VARCHAR(255) NOT NULL
 );
 
@@ -17,7 +17,7 @@ CREATE TABLE IF NOT EXISTS Genre
 DROP TABLE IF EXISTS Album;
 CREATE TABLE IF NOT EXISTS Album 
 (
- album_id TINYINT PRIMARY KEY,
+ album_id TINYINT PRIMARY KEY AUTO_INCREMENT,
  title VARCHAR(255) NOT NULL,
  year_released INT NOT NULL
 );
@@ -26,8 +26,8 @@ CREATE TABLE IF NOT EXISTS Album
 DROP TABLE IF EXISTS Artist;
 CREATE TABLE IF NOT EXISTS Artist  
 (
- artist_id TINYINT PRIMARY KEY,
- name VARCHAR(100) NOT NULL
+ artist_id TINYINT PRIMARY KEY AUTO_INCREMENT,
+ name VARCHAR(255) NOT NULL
 );
 
 -- Table Customer
@@ -46,16 +46,16 @@ DROP TABLE IF EXISTS Track;
 CREATE TABLE IF NOT EXISTS Track
 (
  track_id TINYINT PRIMARY KEY,
- genre TINYINT, -- FK
- album TINYINT, -- FK
- artist TINYINT, -- FK 
+ genre_id TINYINT, -- FK
+ album_id TINYINT, -- FK
+ artist_id TINYINT, -- FK
  title VARCHAR(255) NOT NULL,
  length INT, -- seconds
- FOREIGN KEY (album) REFERENCES Album(album_id)
+ FOREIGN KEY (album_id) REFERENCES Album(album_id)
  ON DELETE SET NULL ON UPDATE CASCADE,
- FOREIGN KEY (genre) REFERENCES Genre(genre_id)
+ FOREIGN KEY (genre_id) REFERENCES Genre(genre_id)
  ON DELETE SET NULL ON UPDATE CASCADE,
- FOREIGN KEY (artist) REFERENCES Artist(artist_id)
+ FOREIGN KEY (artist_id) REFERENCES Artist(artist_id)
  ON DELETE SET NULL ON UPDATE CASCADE
 );
 
@@ -64,13 +64,13 @@ DROP TABLE IF EXISTS Invoice;
 CREATE TABLE IF NOT EXISTS Invoice
 (
  invoice_id TINYINT PRIMARY KEY,
- track TINYINT NOT NULL, -- FK
- customer TINYINT, -- FK
+ track_id TINYINT NOT NULL, -- FK
+ customer_id TINYINT, -- FK
  quantity INT DEFAULT 0, -- (quantity * unitprice)  sales
  unit_price DECIMAL (5,2),
- FOREIGN KEY (track) REFERENCES Track(track_id)
+ FOREIGN KEY (track_id) REFERENCES Track(track_id)
  ON DELETE CASCADE ON UPDATE CASCADE,
- FOREIGN KEY (customer) REFERENCES Customer(customer_id)
+ FOREIGN KEY (customer_id) REFERENCES Customer(customer_id)
  ON DELETE CASCADE ON UPDATE CASCADE
 );
 
@@ -78,9 +78,9 @@ CREATE TABLE IF NOT EXISTS Invoice
 DROP TABLE IF EXISTS Sales;
 CREATE TABLE IF NOT EXISTS Sales (
 sales_id TINYINT PRIMARY KEY AUTO_INCREMENT,
-customer TINYINT NOT NULL,
+customer_id TINYINT NOT NULL,
 total_sales DECIMAL(8,2) DEFAULT 0.00, 
-FOREIGN KEY (customer) REFERENCES Customer(customer_id)
+FOREIGN KEY (customer_id) REFERENCES Customer(customer_id)
 ON DELETE CASCADE ON UPDATE CASCADE
 );
 
