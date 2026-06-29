@@ -141,6 +141,8 @@ USE MusicDB;
 
 
 
+
+
 /* ===============  Problem 7 (GROUP BY and HAVING)================
     Problem:
         Find the total track sales per state where total sales exceed $5.
@@ -155,23 +157,14 @@ USE MusicDB;
 
 /* ===============  Problem 8 (MATCHING)================
     Problem:
-        Find all tracks in each album where the track title contains 'o' at index position 1.
-        Display the album title and track title.
+        Find all tracks in each album where the track title contains 'o' at index position 1 and the length of the title
+        is greater than 4 chars. Display the album title and track title.
 */
 
 
 
 
-
-/* ===============  Problem 9 (LENGTH)================
-    Problem:
-        Find the number of tracks per album where the track title length exceeds 9 characters.
-        Display the album title and the count of such tracks.
-*/
-
-
-
-/* ===============  Problem 10 (JOINS TYPE) ================
+/* ===============  Problem 9 (JOINS TYPE) ================
     Solve the following problems:
        (1) Retrieve all invoices that have customers, and all customers who have invoices.
        (2) Retrieve all customers and their invoices, including customers without invoices.
@@ -186,7 +179,7 @@ USE MusicDB;
 
 
 
-/* ===============  Problem 11 (Challenge Problem) ================
+/* ===============  Problem 10 (Challenge Problem) ================
     Problem:
         Find all customers who purchased the same track.
         Display the customer name and track title.
@@ -202,7 +195,7 @@ USE MusicDB;
 
 
 
-/* ===============  Problem 12 (Recursive CTEs) ================
+/* ===============  Problem 11 (Recursive CTEs) ================
    Very Challenging Problem:
        Find the full referral chain for a given customer.
        For example, Customer 1 -> referred 2 -> referred 3 -> referred 4
@@ -212,7 +205,7 @@ USE MusicDB;
 
 
 
-/* ===============  Problem 13 (Window Functions) ================
+/* ===============  Problem 12 (Window Functions) ================
     Problem:
         Find the second most popular track based on total sales (most popular = highest sales).
         Display the track title and its total sales. Ensure you account for potential ties in the sales data.
@@ -224,7 +217,7 @@ USE MusicDB;
 
 */
 
-/* ===============  Problem 14 (Free Style) ================
+/* ===============  Problem 13 (Free Style) ================
    Testing your knowledge acquired from this lecture:
         For each album, find the number of tracks where:
             - The track title contains 'o' at index position 1.
