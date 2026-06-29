@@ -28,7 +28,7 @@ INSERT INTO Artist (artist_id, name) Values (3, 'Alanis Morissete');
 INSERT INTO Artist (artist_id, name) Values (4, 'Ella Fitzgerald');
 INSERT INTO Artist (artist_id, name) Values (5, 'Billie Ellish');
 
--- TRACK INSERTS 
+-- TRACK INSERTS
 INSERT INTO Track  VALUES (1, 4, 1, 5,  'Bury a Friend', 240);
 INSERT INTO Track  VALUES (2, 4, 1, 5, 'Lovely', 360);
 INSERT INTO Track  VALUES (3, 4, 1, 5, 'Copy cat', 840);
@@ -78,5 +78,5 @@ INSERT INTO Invoice (invoice_id, track_id, customer_id, quantity, unit_price) VA
 INSERT INTO Invoice (invoice_id, track_id, customer_id, quantity, unit_price) VALUES (18,7,3,6,15.99);
 INSERT INTO Invoice (invoice_id, track_id, customer_id, quantity, unit_price) VALUES (19,7,3,8,15.99);
 INSERT INTO Invoice (invoice_id, track_id, customer_id, quantity, unit_price) VALUES (20,9,7,2,4.99);
-INSERT INTO Invoice (invoice_id, track, customer, quantity, unit_price) VALUES (21,9,null,2,7.99);
-INSERT INTO Invoice (invoice_id, track, customer, quantity, unit_price) VALUES (22,1,null,6,5.89);
+INSERT INTO Invoice (invoice_id, track_id, customer_id, quantity, unit_price) VALUES (21,9,null,2,7.99);
+INSERT INTO Invoice (invoice_id, track_id, customer_id, quantity, unit_price) VALUES (22,1,null,6,5.89);
