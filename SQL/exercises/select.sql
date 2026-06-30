@@ -1,4 +1,5 @@
 /*
+   THIS IS Data Query Language (DQL)
 -- This script contains various SELECT statement practice problems.
 -- In these practice problems, students will develop the following SQL skills:
 
@@ -34,16 +35,12 @@ ORDER OF EXECUTION
 3. WHERE
 4. GROUP BY
 5. HAVING
-6. SELECT --> here
-7. DISTINCT
-8. ORDER BY DESC OR ASC
-9. LIMIT
+6. Windows Functions
+7. SELECT
+8. DISTINCT
+9. ORDER BY DESC OR ASC
+10. LIMIT
 
-SELECT Customer.state AS 'Customer', SUM(Invoice.unit_price * Invoice.quantity) AS TotalSales
-FROM Invoice
-JOIN Customer ON Customer.customer_id = Invoice.customer
-WHERE TotalSales > 5
-GROUP BY Customer.state;
 
 
  */
@@ -59,7 +56,21 @@ USE MusicDB;
 /* ===============  Problem 1 (Basic Query) ================
    Problem:
       Retrieve all tracks from the database.
+
+   Organize your data before even writing the query.
+   1. What to find? *
+   2. Where to find it? Track table
+   3. Any conditions that the problem needs? None.
+
 */
+
+SELECT *
+FROM Track;
+
+
+
+
+
 
 
 
@@ -72,7 +83,24 @@ USE MusicDB;
        (1) Using WHERE with fully qualified references
        (2) Using INNER JOIN with alias-qualified references
 
+   Organization:
+       1. *
+       2. Track, Album
+       3. album name must be "Objection Overruled"
+
 */
+
+-- (1) Joining tables with WHERE. Never do this in industry!
+SELECT * FROM Track, Album
+WHERE Album.title = 'Objection Overruled' AND
+Album.album_id = Track.album_id;
+
+-- (2) Joining tables using JOIN
+
+SELECT * FROM Track
+JOIN Album ON Album.album_id = Track.album_id
+WHERE Album.title = 'Objection Overruled' ;
+
 
 
 
@@ -84,10 +112,19 @@ USE MusicDB;
 */
 
 -- (1) Calling Tables as a prefix for attributes
+SELECT Track.title, Album.title, Genre.description
+FROM Track -- we put on the FROM the tables that are associative or contain the FK.
+JOIN Album ON Album.album_id = Track.album_id
+JOIN Genre ON Genre.genre_id = Track.genre_id
+WHERE Genre.description = 'Metal' OR Genre.description = 'Alternative & Punk';
 
 
 -- (2) Using Table's Alias
-
+SELECT t.title AS 'Track', a.title AS 'Album', g.description AS 'Track Genre'
+FROM Track t -- we put on the FROM the tables that are associative or contain the FK.
+JOIN Album a ON a.album_id = t.album_id
+JOIN Genre g ON g.genre_id = t.genre_id
+WHERE g.description = 'Metal' OR g.description = 'Alternative & Punk';
 
 
 /* ===============  Problem 4 (Optimizations) ================
@@ -101,7 +138,10 @@ USE MusicDB;
 
 */
 
-
+SELECT Invoice.customer_id AS 'Customer id', Invoice.invoice_id AS InvoiceNumber
+FROM Invoice
+JOIN Track ON Track.track_id = Invoice.track_id
+WHERE Track.title = 'Bury a Friend';
 
 
 /* ===============  Problem 5 (Ordering and Limiting) ================
@@ -174,6 +214,8 @@ USE MusicDB;
        (6) Retrieve all invoices and all customers.
        (7) Retrieve all invoices without customers and customers without invoices.
 */
+
+
 
 
 

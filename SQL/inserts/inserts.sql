@@ -77,6 +77,5 @@ INSERT INTO Invoice (invoice_id, track_id, customer_id, quantity, unit_price) VA
 INSERT INTO Invoice (invoice_id, track_id, customer_id, quantity, unit_price) VALUES (17,14,3,4,11.99);
 INSERT INTO Invoice (invoice_id, track_id, customer_id, quantity, unit_price) VALUES (18,7,3,6,15.99);
 INSERT INTO Invoice (invoice_id, track_id, customer_id, quantity, unit_price) VALUES (19,7,3,8,15.99);
-INSERT INTO Invoice (invoice_id, track_id, customer_id, quantity, unit_price) VALUES (20,9,7,2,4.99);
-INSERT INTO Invoice (invoice_id, track_id, customer_id, quantity, unit_price) VALUES (21,9,null,2,7.99);
-INSERT INTO Invoice (invoice_id, track_id, customer_id, quantity, unit_price) VALUES (22,1,null,6,5.89);
+INSERT INTO Invoice (invoice_id, track_id, customer_id, quantity, unit_price) VALUES (20,9,null,2,7.99);
+INSERT INTO Invoice (invoice_id, track_id, customer_id, quantity, unit_price) VALUES (21,1,null,6,5.89);
