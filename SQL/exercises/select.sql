@@ -151,10 +151,8 @@ WHERE Track.title = 'Bury a Friend';
        Display the artist name, track title, and release date.
 
     Solve this problem using the following four approaches:
-       (1) without column alias
-       (2) with column alias
-       (3) Show only the most recent released track
-       (4) Show the oldest released track
+       (1) Show only the most recent released track
+       (2) Show the oldest released track
 */
 
 
